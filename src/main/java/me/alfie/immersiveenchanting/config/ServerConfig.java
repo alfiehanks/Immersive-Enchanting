@@ -13,6 +13,7 @@ public class ServerConfig {
     public final ForgeConfigSpec.ConfigValue<Integer> bookshelfSearchHeight;
     public final ForgeConfigSpec.ConfigValue<Boolean> vanillaBookMode;
     public final ForgeConfigSpec.ConfigValue<Boolean> xpCostMode;
+    public final ForgeConfigSpec.ConfigValue<Integer> bookUnlockMode;
 
 
 
@@ -49,6 +50,14 @@ public class ServerConfig {
                 .translation("immersiveenchanting.config.xp_cost_mode")
                 .define("xpCostMode", false);
 
+        bookUnlockMode = builder
+                .comment("Controls how many enchantment levels are unlocked when a book is placed in a nearby chiseled bookshelf.\n" +
+                        "  0 = Restrictive: only the exact level of the book is unlocked (e.g. Efficiency III unlocks only level 3).\n" +
+                        "  1 = Default: all levels up to and including the book's level are unlocked (e.g. Efficiency III unlocks levels 1, 2, and 3).\n" +
+                        "  2 = Permissive: all levels of the enchantment are unlocked regardless of the book's level (e.g. Efficiency III unlocks all Efficiency levels).")
+                .translation("immersiveenchanting.config.book_unlock_mode")
+                .defineInRange("bookUnlockMode", 1, 0, 2);
+
         builder.pop();
     }
 
@@ -70,5 +79,9 @@ public class ServerConfig {
 
     public static boolean isXpCostModeEnabled() {
         return ServerConfig.CONFIG.xpCostMode.get();
+    }
+
+    public static int getBookUnlockMode() {
+        return ServerConfig.CONFIG.bookUnlockMode.get();
     }
 }

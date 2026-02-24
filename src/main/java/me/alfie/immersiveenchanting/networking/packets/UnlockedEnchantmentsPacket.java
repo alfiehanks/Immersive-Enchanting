@@ -12,19 +12,27 @@ import java.util.function.Supplier;
 
 public class UnlockedEnchantmentsPacket {
 
+    /**
+     * Parallel lists mapping each enchantment key to its max unlocked level.
+     * A maxLevel of Integer.MAX_VALUE means all levels are unlocked.
+     */
     public final List<ResourceKey<Enchantment>> enchantments;
+    public final List<Integer> maxLevels;
 
-    public UnlockedEnchantmentsPacket(List<ResourceKey<Enchantment>> enchantments) {
+    public UnlockedEnchantmentsPacket(List<ResourceKey<Enchantment>> enchantments, List<Integer> maxLevels) {
         this.enchantments = enchantments;
+        this.maxLevels = maxLevels;
     }
 
     public static void encode(UnlockedEnchantmentsPacket packet, FriendlyByteBuf buf) {
         buf.writeCollection(packet.enchantments, FriendlyByteBuf::writeResourceKey);
+        buf.writeCollection(packet.maxLevels, FriendlyByteBuf::writeInt);
     }
 
     public static UnlockedEnchantmentsPacket decode(FriendlyByteBuf buf) {
         List<ResourceKey<Enchantment>> enchantments = buf.readList(b -> b.readResourceKey(Registries.ENCHANTMENT));
-        return new UnlockedEnchantmentsPacket(enchantments);
+        List<Integer> maxLevels = buf.readList(FriendlyByteBuf::readInt);
+        return new UnlockedEnchantmentsPacket(enchantments, maxLevels);
     }
 
     public static void handle(UnlockedEnchantmentsPacket packet, Supplier<NetworkEvent.Context> contextSupplier) {

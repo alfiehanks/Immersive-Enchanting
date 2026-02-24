@@ -28,6 +28,7 @@ public class EnchantingNodeBranch {
     private final Holder<Enchantment> enchantmentHolder;
     private final int equippedLevel;
     private final boolean isBranchUnlocked;
+    private final int maxUnlockedLevel;
     private final Player player;
     private final List<Pixel> precomputedPixels = new ArrayList<>();
     ResourceLocation bakedTextureLocation;
@@ -40,12 +41,14 @@ public class EnchantingNodeBranch {
     public EnchantingNodeBranch(EnchantingTableScreen screen, float branchAngle,
                                 Holder<Enchantment> enchantmentHolder, int equippedLevel,
                                 boolean isBranchUnlocked,
+                                int maxUnlockedLevel,
                                 Player player) {
         this.screen = screen;
         this.branchAngle = branchAngle;
         this.enchantmentHolder = enchantmentHolder;
         this.equippedLevel = equippedLevel; //0 if not enchantment not equipped.
         this.isBranchUnlocked = isBranchUnlocked;
+        this.maxUnlockedLevel = maxUnlockedLevel;
         this.player = player;
 
         //ResourceLocation icon_texture = enchantmentType.getIconTexture();
@@ -81,12 +84,17 @@ public class EnchantingNodeBranch {
                     ? EnchantingNodeType.ELITE
                     : EnchantingNodeType.BASIC;
 
+            // Node is individually unlocked only if the branch is unlocked AND
+            // this level falls within the max unlocked level from the bookshelf.
+            boolean isNodeUnlocked = this.isBranchUnlocked &&
+                    (maxUnlockedLevel == Integer.MAX_VALUE || i <= maxUnlockedLevel);
+
             EnchantingNode node = new EnchantingNode(
                     nodeType,
                     icon_texture,
                     i,
                     enchantmentHolder,
-                    this.isBranchUnlocked
+                    isNodeUnlocked
             );
 
             if (i <= equippedLevel) {

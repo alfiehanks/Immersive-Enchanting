@@ -24,8 +24,8 @@ import org.joml.Vector2i;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class EnchantingTableScreen extends AbstractContainerScreen<EnchantingTableMenu> {
@@ -165,7 +165,7 @@ public class EnchantingTableScreen extends AbstractContainerScreen<EnchantingTab
     public void buildNodeBranches(ItemStack currentItemStack) {
         //Step 1. Find which enchantments are applicable.
         Set<Holder<Enchantment>> validEnchantments = new HashSet<>(); //Set of all enchantments that can be applied
-        Set<Holder<Enchantment>> unlockedEnchantments = menu.getUnlockedEnchantments();
+        Map<Holder<Enchantment>, Integer> unlockedEnchantments = menu.getUnlockedEnchantments();
 
         Set<Holder<Enchantment>> allEnchantments = ImmersiveEnchanting.getEnchantmentRegistry(
                         player.level().registryAccess())
@@ -210,19 +210,20 @@ public class EnchantingTableScreen extends AbstractContainerScreen<EnchantingTab
 
         int i = 0;
         for (Holder<Enchantment> enchantmentHolder : validEnchantments) {
-            //Check if the enchantmentResourceId is unlocked.
-            boolean isUnlocked = unlockedEnchantments.contains(enchantmentHolder);
-            AtomicInteger enchantmentLevel = new AtomicInteger();
+            // -1 means not unlocked at all; Integer.MAX_VALUE means all levels unlocked
+            int maxUnlockedLevel = unlockedEnchantments.getOrDefault(enchantmentHolder, -1);
+            boolean isUnlocked = maxUnlockedLevel >= 0;
 
-            //Get the level of this enchantment
-            enchantmentLevel.set(currentItemStack.getItem().getEnchantmentLevel(currentItemStack, enchantmentHolder.get()));
+            //Get the level of this enchantment already on the item
+            int enchantmentLevel = currentItemStack.getItem().getEnchantmentLevel(currentItemStack, enchantmentHolder.get());
 
             branches.add(new EnchantingNodeBranch(
                     this,
                     angles.get(i),
                     enchantmentHolder,
-                    enchantmentLevel.get(),
+                    enchantmentLevel,
                     isUnlocked,
+                    maxUnlockedLevel,
                     player
             ));
             i++;

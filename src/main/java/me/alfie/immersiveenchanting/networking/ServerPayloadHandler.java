@@ -39,6 +39,7 @@ import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.PacketDistributor;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -175,18 +176,18 @@ public class ServerPayloadHandler {
     public static void checkBookshelvesAndUpdateClient(BlockPos tablePos, Level level, ServerPlayer serverPlayer) {
         List<BlockEntity> bookshelves = getChiseledBookshelvesNearby(tablePos, level);
 
-        //Store resource locations as strings - i.e "minecraft:respiration"
-        List<ResourceKey<Enchantment>> unlockedEnchantments = new ArrayList<>();
+        // Track the highest found level per enchantment key
+        Map<ResourceKey<Enchantment>, Integer> highestFoundLevel = new HashMap<>();
+
         for (BlockEntity bookshelf : bookshelves) {
             List<ItemStack> books = getChiseledBookshelfContents(bookshelf);
 
-            //Get books in bookshelf
             for (ItemStack book : books) {
                 if (book.getItem() == ModItems.ANCIENT_BOOK.get()) {
                     ResourceKey<Enchantment> key = AncientBook.getEnchantment(book, level);
-
                     if (key != null) {
-                        unlockedEnchantments.add(key);
+                        // Ancient books have no level concept - treat as level 1
+                        highestFoundLevel.merge(key, 1, Math::max);
                     }
                 } else if (ServerConfig.isVanillaBookModeEnabled() && book.getItem() instanceof EnchantedBookItem) {
                     ListTag storedEnchantments = EnchantedBookItem.getEnchantments(book);
@@ -195,32 +196,46 @@ public class ServerPayloadHandler {
                         ResourceLocation enchantmentRL = ResourceLocation.tryParse(tag.getString("id"));
                         if (enchantmentRL != null) {
                             ResourceKey<Enchantment> key = ResourceKey.create(Registries.ENCHANTMENT, enchantmentRL);
-                            unlockedEnchantments.add(key);
+                            int bookLevel = tag.getShort("lvl");
+                            highestFoundLevel.merge(key, bookLevel, Math::max);
                         }
                     }
                 }
             }
         }
 
-        //Unlock all enchantments if creative bookshelf is near
-        if (isCreativeBookshelfNearby(tablePos, level) || !ServerConfig.areAncientBooksRequired()) {
-            //Clear unlockedEnchantments from the bookshelf search
-            unlockedEnchantments.clear();
+        // Build final parallel lists applying bookUnlockMode
+        List<ResourceKey<Enchantment>> enchantmentKeys = new ArrayList<>();
+        List<Integer> maxLevels = new ArrayList<>();
 
-            //Add all enchantments that exist
+        //Unlock all enchantments if creative bookshelf is near or books not required
+        if (isCreativeBookshelfNearby(tablePos, level) || !ServerConfig.areAncientBooksRequired()) {
             RegistryAccess registryAccess = level.registryAccess();
             Registry<Enchantment> enchantmentRegistry = ImmersiveEnchanting.getEnchantmentRegistry(registryAccess);
-            List<Holder.Reference<Enchantment>> allEnchantments = enchantmentRegistry.asLookup().listElements().toList();
-
-            // Convert each Holder to its ResourceLocation string
-            unlockedEnchantments = allEnchantments.stream()
-                    .map(Holder.Reference::key)
-                    .toList();
+            enchantmentRegistry.asLookup().listElements().forEach(holder -> {
+                enchantmentKeys.add(holder.key());
+                maxLevels.add(Integer.MAX_VALUE);
+            });
+        } else {
+            int unlockMode = ServerConfig.getBookUnlockMode();
+            for (Map.Entry<ResourceKey<Enchantment>, Integer> entry : highestFoundLevel.entrySet()) {
+                enchantmentKeys.add(entry.getKey());
+                if (unlockMode == 0) {
+                    // Restrictive: only the exact level found
+                    maxLevels.add(entry.getValue());
+                } else if (unlockMode == 1) {
+                    // Default: all levels up to and including the found level
+                    maxLevels.add(entry.getValue());
+                } else {
+                    // Permissive: all levels
+                    maxLevels.add(Integer.MAX_VALUE);
+                }
+            }
         }
 
         ModPacketHandler.INSTANCE.send(
                 PacketDistributor.PLAYER.with(() -> serverPlayer),
-                new UnlockedEnchantmentsPacket(unlockedEnchantments)
+                new UnlockedEnchantmentsPacket(enchantmentKeys, maxLevels)
         );
     }
 

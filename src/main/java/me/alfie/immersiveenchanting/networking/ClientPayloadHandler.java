@@ -14,8 +14,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkEvent;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Server -> Client
@@ -52,15 +52,15 @@ public class ClientPayloadHandler {
      * @param context
      */
     public static void onUnlockedEnchantments(final UnlockedEnchantmentsPacket packet, final NetworkEvent.Context context) {
-        Set<ResourceKey<Enchantment>> unlockedEnchantmentResourceIds = new HashSet<>(packet.enchantments);
         LocalPlayer player = Minecraft.getInstance().player;
 
-        Set<Holder<Enchantment>> unlockedEnchantments = new HashSet<>();
-        for (ResourceKey<Enchantment> enchantmentKey : unlockedEnchantmentResourceIds) {
+        Map<Holder<Enchantment>, Integer> unlockedEnchantments = new HashMap<>();
+        for (int i = 0; i < packet.enchantments.size(); i++) {
+            ResourceKey<Enchantment> enchantmentKey = packet.enchantments.get(i);
+            int maxLevel = packet.maxLevels.get(i);
             ImmersiveEnchanting.getEnchantmentHolder(player.level().registryAccess(), enchantmentKey)
-                    .ifPresent(unlockedEnchantments::add);
+                    .ifPresent(holder -> unlockedEnchantments.put(holder, maxLevel));
         }
-
 
         if (player.containerMenu instanceof EnchantingTableMenu menu) {
             menu.setUnlockedEnchantments(unlockedEnchantments);

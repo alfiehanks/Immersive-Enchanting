@@ -17,7 +17,9 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class EnchantingTableMenu extends AbstractContainerMenu {
@@ -26,7 +28,8 @@ public class EnchantingTableMenu extends AbstractContainerMenu {
     private ContainerLevelAccess access;
     private Level level;
     private IItemHandler containerInventory;
-    private Set<Holder<Enchantment>> unlockedEnchantments = new HashSet<>();
+    /** Maps each unlocked enchantment to its max unlocked level. Integer.MAX_VALUE means all levels. */
+    private Map<Holder<Enchantment>, Integer> unlockedEnchantments = new HashMap<>();
 
 
     //My constructor
@@ -152,11 +155,11 @@ public class EnchantingTableMenu extends AbstractContainerMenu {
         return AbstractContainerMenu.stillValid(this.access, player, Blocks.ENCHANTING_TABLE);
     }
 
-    public Set<Holder<Enchantment>> getUnlockedEnchantments() {
+    public Map<Holder<Enchantment>, Integer> getUnlockedEnchantments() {
         return unlockedEnchantments;
     }
 
-    public void setUnlockedEnchantments(Set<Holder<Enchantment>> unlockedEnchantments) {
+    public void setUnlockedEnchantments(Map<Holder<Enchantment>, Integer> unlockedEnchantments) {
         this.unlockedEnchantments = unlockedEnchantments;
     }
 
