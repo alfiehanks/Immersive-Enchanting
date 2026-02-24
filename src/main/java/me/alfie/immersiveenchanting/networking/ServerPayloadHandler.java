@@ -71,7 +71,9 @@ public class ServerPayloadHandler {
         );
 
         //Check enchantment cost
-        final int xpLevelCost = packet.enchantmentLevel * 3;
+        // Single-tier enchantments (max level 1) get a flat 9 XP level cost in XP mode.
+        int effectiveLevel = (enchantment.get().getMaxLevel() == 1) ? 3 : packet.enchantmentLevel;
+        final int xpLevelCost = effectiveLevel * 3;
         boolean hasEnoughCost;
 
         if (ServerConfig.isXpCostModeEnabled()) {

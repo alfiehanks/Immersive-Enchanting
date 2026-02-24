@@ -176,7 +176,8 @@ public class EnchantingNodeTooltip {
 
             if (!node.isObtained()) {
                 if (EnchantmentCostRegistry.getClientRegistry().isXpCostMode()) {
-                    int xpLevels = node.getEnchantmentLevel() * 3;
+                    int effectiveLevel = (node.getEnchantmentHolder().get().getMaxLevel() == 1) ? 3 : node.getEnchantmentLevel();
+                    int xpLevels = effectiveLevel * 3;
                     String xpText = xpLevels + " XP levels";
                     int xpTextX = descriptionBoxTopLeft.x + costBoxLabelX + padding;
                     graphics.drawString(font,
