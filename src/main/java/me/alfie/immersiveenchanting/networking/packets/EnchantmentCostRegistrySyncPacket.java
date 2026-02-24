@@ -1,5 +1,6 @@
 package me.alfie.immersiveenchanting.networking.packets;
 
+import me.alfie.immersiveenchanting.config.ServerConfig;
 import me.alfie.immersiveenchanting.datapack.EnchantmentCost;
 import me.alfie.immersiveenchanting.datapack.EnchantmentCostRegistry;
 import me.alfie.immersiveenchanting.datapack.LevelCost;
@@ -28,6 +29,7 @@ public class EnchantmentCostRegistrySyncPacket {
     public final List<Integer> amounts;
     public final String lapisCostItemId;
     public final int lapisCostAmount;
+    public final boolean xpCostMode;
 
     public EnchantmentCostRegistrySyncPacket(
             List<String> enchantmentNamespaces,
@@ -35,13 +37,15 @@ public class EnchantmentCostRegistrySyncPacket {
             List<String> itemIds,
             List<Integer> amounts,
             String lapisCostItemId,
-            int lapisCostAmount) {
+            int lapisCostAmount,
+            boolean xpCostMode) {
         this.enchantmentNamespaces = enchantmentNamespaces;
         this.levels = levels;
         this.itemIds = itemIds;
         this.amounts = amounts;
         this.lapisCostItemId = lapisCostItemId;
         this.lapisCostAmount = lapisCostAmount;
+        this.xpCostMode = xpCostMode;
     }
 
     public static void encode(EnchantmentCostRegistrySyncPacket packet, FriendlyByteBuf buf) {
@@ -51,6 +55,7 @@ public class EnchantmentCostRegistrySyncPacket {
         buf.writeCollection(packet.amounts, FriendlyByteBuf::writeInt);
         buf.writeUtf(packet.lapisCostItemId);
         buf.writeInt(packet.lapisCostAmount);
+        buf.writeBoolean(packet.xpCostMode);
     }
 
     public static EnchantmentCostRegistrySyncPacket decode(FriendlyByteBuf buf) {
@@ -60,13 +65,15 @@ public class EnchantmentCostRegistrySyncPacket {
         List<Integer> amounts = buf.readList(FriendlyByteBuf::readInt);
         String lapisCostItemId = buf.readUtf();
         int lapisCostAmount = buf.readInt();
+        boolean xpCostMode = buf.readBoolean();
         return new EnchantmentCostRegistrySyncPacket(
                 enchantmentNamespaces,
                 levels,
                 itemIds,
                 amounts,
                 lapisCostItemId,
-                lapisCostAmount
+                lapisCostAmount,
+                xpCostMode
         );
     }
 
@@ -84,7 +91,7 @@ public class EnchantmentCostRegistrySyncPacket {
      * @param serializedRegistry
      * @return
      */
-    public static EnchantmentCostRegistry deserialize(SerializedEnchantmentCostRegistry serializedRegistry) {
+    public static EnchantmentCostRegistry deserialize(SerializedEnchantmentCostRegistry serializedRegistry, boolean xpCostMode) {
         EnchantmentCostRegistry enchantmentCostRegistry = new EnchantmentCostRegistry();
 
         //For each namespace in the parallel list
@@ -104,6 +111,7 @@ public class EnchantmentCostRegistrySyncPacket {
             enchantmentCost.levels.put(level, levelCost);
         }
 
+        enchantmentCostRegistry.setXpCostMode(xpCostMode);
         return enchantmentCostRegistry;
     }
 
@@ -127,7 +135,8 @@ public class EnchantmentCostRegistrySyncPacket {
                         serializedRegistry.itemIds(),
                         serializedRegistry.amounts(),
                         serializedRegistry.lapisCostItemId(),
-                        serializedRegistry.lapisCostAmount()
+                        serializedRegistry.lapisCostAmount(),
+                        ServerConfig.isXpCostModeEnabled()
                 ));
     }
 

@@ -1,6 +1,7 @@
 package me.alfie.immersiveenchanting.gui;
 
 import me.alfie.immersiveenchanting.ImmersiveEnchanting;
+import me.alfie.immersiveenchanting.datapack.EnchantmentCostRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -174,7 +175,15 @@ public class EnchantingNodeTooltip {
                     ChatFormatting.GREEN.getColor());
 
             if (!node.isObtained()) {
-                if (costStack.is(Items.AIR) || costStack.isEmpty()) {
+                if (EnchantmentCostRegistry.getClientRegistry().isXpCostMode()) {
+                    int xpLevels = node.getEnchantmentLevel() * 3;
+                    String xpText = xpLevels + " XP levels";
+                    graphics.drawString(font,
+                            xpText,
+                            descriptionBoxTopLeft.x + costBoxLabelX + padding,
+                            costBoxLabelY + padding / 2,
+                            0x80FF20); // XP bar green
+                } else if (costStack.is(Items.AIR) || costStack.isEmpty()) {
                     graphics.drawString(font,
                             Component.translatable("gui.immersiveenchanting.cost_free"),
                             descriptionBoxTopLeft.x + costBoxLabelX + padding,

@@ -16,6 +16,7 @@ public class EnchantmentCostRegistry {
     // Maps the enchantment ResourceLocation (e.g., minecraft:efficiency) to its cost data
     private final Map<ResourceKey<Enchantment>, EnchantmentCost> COST_REGISTRY = new HashMap<>();
     private ItemStack lapisCost;
+    private boolean xpCostMode = false;
 
     public static EnchantmentCostRegistry getClientRegistry() {
         return clientEnchantmentCostRegistry;
@@ -90,5 +91,13 @@ public class EnchantmentCostRegistry {
 
     public void setLapisCost(ItemStack lapisCost) {
         this.lapisCost = lapisCost;
+    }
+
+    public boolean isXpCostMode() {
+        return xpCostMode;
+    }
+
+    public void setXpCostMode(boolean xpCostMode) {
+        this.xpCostMode = xpCostMode;
     }
 }

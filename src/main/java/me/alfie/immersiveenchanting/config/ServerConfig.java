@@ -12,6 +12,7 @@ public class ServerConfig {
     public final ForgeConfigSpec.ConfigValue<Boolean> disableAncientBookRequirement;
     public final ForgeConfigSpec.ConfigValue<Integer> bookshelfSearchHeight;
     public final ForgeConfigSpec.ConfigValue<Boolean> vanillaBookMode;
+    public final ForgeConfigSpec.ConfigValue<Boolean> xpCostMode;
 
 
 
@@ -43,6 +44,11 @@ public class ServerConfig {
                 .translation("immersiveenchanting.config.vanilla_book_mode")
                 .define("vanillaBookMode", false);
 
+        xpCostMode = builder
+                .comment("If enabled, enchanting costs XP levels instead of materials. Each enchantment level costs (level * 3) XP levels (e.g. level 1 = 3 levels, level 2 = 6 levels, level 3 = 9 levels). Material costs from datapacks are ignored.")
+                .translation("immersiveenchanting.config.xp_cost_mode")
+                .define("xpCostMode", false);
+
         builder.pop();
     }
 
@@ -60,5 +66,9 @@ public class ServerConfig {
 
     public static boolean isVanillaBookModeEnabled() {
         return ServerConfig.CONFIG.vanillaBookMode.get();
+    }
+
+    public static boolean isXpCostModeEnabled() {
+        return ServerConfig.CONFIG.xpCostMode.get();
     }
 }

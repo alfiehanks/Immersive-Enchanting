@@ -41,7 +41,7 @@ public class ClientPayloadHandler {
         );
 
         EnchantmentCostRegistry.setClientRegistry(
-                EnchantmentCostRegistrySyncPacket.deserialize(serializedRegistry)
+                EnchantmentCostRegistrySyncPacket.deserialize(serializedRegistry, packet.xpCostMode)
         );
     }
 

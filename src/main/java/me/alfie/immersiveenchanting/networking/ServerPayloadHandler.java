@@ -70,26 +70,39 @@ public class ServerPayloadHandler {
         );
 
         //Check enchantment cost
-        ItemStack costSlotItemStack = enchantingTableMenu.getSlot(EnchantingTableMenu.SLOTS.COST.ordinal()).getItem();
-        ItemStack requiredItemCostStack = EnchantmentCostRegistry.getServerRegistry().getEnchantmentCost(packet.enchantment).getLevel(packet.enchantmentLevel).asItemStack();
+        final int xpLevelCost = packet.enchantmentLevel * 3;
+        boolean hasEnoughCost;
 
-        ItemStack requiredLapisCost = EnchantmentCostRegistry.getServerRegistry().getLapisCost();
-        ItemStack lapisSlotStack = enchantingTableMenu.getSlot(EnchantingTableMenu.SLOTS.LAPIS.ordinal()).getItem();
+        if (ServerConfig.isXpCostModeEnabled()) {
+            hasEnoughCost = player.isCreative() || player.experienceLevel >= xpLevelCost;
+        } else {
+            ItemStack costSlotItemStack = enchantingTableMenu.getSlot(EnchantingTableMenu.SLOTS.COST.ordinal()).getItem();
+            ItemStack requiredItemCostStack = EnchantmentCostRegistry.getServerRegistry().getEnchantmentCost(packet.enchantment).getLevel(packet.enchantmentLevel).asItemStack();
 
-        boolean hasEnoughCost = player.isCreative() ||
-                (requiredLapisCost.isEmpty() ||
-                        (lapisSlotStack.is(requiredLapisCost.getItem()) && lapisSlotStack.getCount() >= requiredLapisCost.getCount()))
-                        && (requiredItemCostStack.isEmpty() ||
-                        (costSlotItemStack.is(requiredItemCostStack.getItem()) &&
-                                costSlotItemStack.getCount() >= requiredItemCostStack.getCount()));
+            ItemStack requiredLapisCost = EnchantmentCostRegistry.getServerRegistry().getLapisCost();
+            ItemStack lapisSlotStack = enchantingTableMenu.getSlot(EnchantingTableMenu.SLOTS.LAPIS.ordinal()).getItem();
 
+            hasEnoughCost = player.isCreative() ||
+                    (requiredLapisCost.isEmpty() ||
+                            (lapisSlotStack.is(requiredLapisCost.getItem()) && lapisSlotStack.getCount() >= requiredLapisCost.getCount()))
+                            && (requiredItemCostStack.isEmpty() ||
+                            (costSlotItemStack.is(requiredItemCostStack.getItem()) &&
+                                    costSlotItemStack.getCount() >= requiredItemCostStack.getCount()));
+        }
 
         if (hasEnoughCost) {
             if (!player.isCreative()) {
-                enchantingTableMenu.getSlot(EnchantingTableMenu.SLOTS.LAPIS.ordinal()).getItem()
-                        .shrink(requiredLapisCost.getCount()); //Use enchantmnet cost registry
-                if (!requiredItemCostStack.isEmpty()) {
-                    costSlotItemStack.shrink(requiredItemCostStack.getCount()); //Use enchantment cost if not air
+                if (ServerConfig.isXpCostModeEnabled()) {
+                    player.giveExperienceLevels(-xpLevelCost);
+                } else {
+                    ItemStack costSlotItemStack = enchantingTableMenu.getSlot(EnchantingTableMenu.SLOTS.COST.ordinal()).getItem();
+                    ItemStack requiredItemCostStack = EnchantmentCostRegistry.getServerRegistry().getEnchantmentCost(packet.enchantment).getLevel(packet.enchantmentLevel).asItemStack();
+                    ItemStack requiredLapisCost = EnchantmentCostRegistry.getServerRegistry().getLapisCost();
+                    enchantingTableMenu.getSlot(EnchantingTableMenu.SLOTS.LAPIS.ordinal()).getItem()
+                            .shrink(requiredLapisCost.getCount()); //Use enchantment cost registry
+                    if (!requiredItemCostStack.isEmpty()) {
+                        costSlotItemStack.shrink(requiredItemCostStack.getCount()); //Use enchantment cost if not air
+                    }
                 }
             }
 
@@ -103,9 +116,8 @@ public class ServerPayloadHandler {
 
             player.awardStat(Stats.ENCHANT_ITEM);
             if (player instanceof ServerPlayer serverPlayer) {
-                // Number is levels spent - using 1 to as a compatible default value
-                // (Adjust if optional enchantment cost extensions in the future may include xp cost)
-                CriteriaTriggers.ENCHANTED_ITEM.trigger(serverPlayer, itemToEnchant, 1);
+                int levelsSpent = ServerConfig.isXpCostModeEnabled() ? xpLevelCost : 1;
+                CriteriaTriggers.ENCHANTED_ITEM.trigger(serverPlayer, itemToEnchant, levelsSpent);
             }
 
             if (packet.enchantmentLevel == EnchantmentCostRegistry.getServerRegistry().getEnchantmentCost(packet.enchantment).getHighestLevel()) {
