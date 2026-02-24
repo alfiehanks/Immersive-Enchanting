@@ -178,11 +178,19 @@ public class EnchantingNodeTooltip {
                 if (EnchantmentCostRegistry.getClientRegistry().isXpCostMode()) {
                     int xpLevels = node.getEnchantmentLevel() * 3;
                     String xpText = xpLevels + " XP levels";
+                    int xpTextX = descriptionBoxTopLeft.x + costBoxLabelX + padding;
                     graphics.drawString(font,
                             xpText,
-                            descriptionBoxTopLeft.x + costBoxLabelX + padding,
+                            xpTextX,
                             costBoxLabelY + padding / 2,
                             0x80FF20); // XP bar green
+                    // Also show lapis cost icon if lapis is required
+                    ItemStack lapisCost = EnchantmentCostRegistry.getClientRegistry().getLapisCost();
+                    if (!lapisCost.isEmpty()) {
+                        costStackPos = new Vector2i(xpTextX + font.width(xpText) + 2, costBoxLabelY);
+                        graphics.renderItem(lapisCost, costStackPos.x, costStackPos.y);
+                        graphics.renderItemDecorations(font, lapisCost, costStackPos.x, costStackPos.y);
+                    }
                 } else if (costStack.is(Items.AIR) || costStack.isEmpty()) {
                     graphics.drawString(font,
                             Component.translatable("gui.immersiveenchanting.cost_free"),

@@ -74,7 +74,11 @@ public class ServerPayloadHandler {
         boolean hasEnoughCost;
 
         if (ServerConfig.isXpCostModeEnabled()) {
-            hasEnoughCost = player.isCreative() || player.experienceLevel >= xpLevelCost;
+            ItemStack requiredLapisCost = EnchantmentCostRegistry.getServerRegistry().getLapisCost();
+            ItemStack lapisSlotStack = enchantingTableMenu.getSlot(EnchantingTableMenu.SLOTS.LAPIS.ordinal()).getItem();
+            boolean hasEnoughLapis = requiredLapisCost.isEmpty() ||
+                    (lapisSlotStack.is(requiredLapisCost.getItem()) && lapisSlotStack.getCount() >= requiredLapisCost.getCount());
+            hasEnoughCost = player.isCreative() || (player.experienceLevel >= xpLevelCost && hasEnoughLapis);
         } else {
             ItemStack costSlotItemStack = enchantingTableMenu.getSlot(EnchantingTableMenu.SLOTS.COST.ordinal()).getItem();
             ItemStack requiredItemCostStack = EnchantmentCostRegistry.getServerRegistry().getEnchantmentCost(packet.enchantment).getLevel(packet.enchantmentLevel).asItemStack();
@@ -94,6 +98,11 @@ public class ServerPayloadHandler {
             if (!player.isCreative()) {
                 if (ServerConfig.isXpCostModeEnabled()) {
                     player.giveExperienceLevels(-xpLevelCost);
+                    ItemStack requiredLapisCost = EnchantmentCostRegistry.getServerRegistry().getLapisCost();
+                    if (!requiredLapisCost.isEmpty()) {
+                        enchantingTableMenu.getSlot(EnchantingTableMenu.SLOTS.LAPIS.ordinal()).getItem()
+                                .shrink(requiredLapisCost.getCount());
+                    }
                 } else {
                     ItemStack costSlotItemStack = enchantingTableMenu.getSlot(EnchantingTableMenu.SLOTS.COST.ordinal()).getItem();
                     ItemStack requiredItemCostStack = EnchantmentCostRegistry.getServerRegistry().getEnchantmentCost(packet.enchantment).getLevel(packet.enchantmentLevel).asItemStack();
