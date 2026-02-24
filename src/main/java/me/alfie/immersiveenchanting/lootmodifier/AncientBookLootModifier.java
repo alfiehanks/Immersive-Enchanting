@@ -3,6 +3,7 @@ package me.alfie.immersiveenchanting.lootmodifier;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import me.alfie.immersiveenchanting.config.ServerConfig;
 import me.alfie.immersiveenchanting.datapack.EnchantmentCostRegistry;
 import me.alfie.immersiveenchanting.datapack.LevelCost;
 import me.alfie.immersiveenchanting.item.AncientBook;
@@ -64,6 +65,7 @@ public class AncientBookLootModifier extends LootModifier {
      */
     @Override
     protected ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
+        if (ServerConfig.isVanillaBookModeEnabled()) return generatedLoot;
         if (context.getRandom().nextFloat() < chance) { // chance from JSON
             ItemStack lootItem = new ItemStack(item, count);
 

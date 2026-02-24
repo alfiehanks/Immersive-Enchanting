@@ -11,6 +11,7 @@ public class ServerConfig {
     // Store the config properties as public finals
     public final ForgeConfigSpec.ConfigValue<Boolean> disableAncientBookRequirement;
     public final ForgeConfigSpec.ConfigValue<Integer> bookshelfSearchHeight;
+    public final ForgeConfigSpec.ConfigValue<Boolean> vanillaBookMode;
 
 
 
@@ -37,6 +38,10 @@ public class ServerConfig {
                 .translation("immersiveenchanting.config.bookshelf_search_height") // translatable label
                 .defineInRange("bookshelfSearchHeight", 3, 1, 5);
 
+        vanillaBookMode = builder
+                .comment("If enabled, Ancient Books are replaced by regular enchanted books. Loot pools are not modified, and regular enchanted books can be placed in chiseled bookshelves to unlock enchantments at the enchanting table.")
+                .translation("immersiveenchanting.config.vanilla_book_mode")
+                .define("vanillaBookMode", false);
 
         builder.pop();
     }
@@ -51,5 +56,9 @@ public class ServerConfig {
 
     public static int getBookshelfSearchHeight() {
         return ServerConfig.CONFIG.bookshelfSearchHeight.get();
+    }
+
+    public static boolean isVanillaBookModeEnabled() {
+        return ServerConfig.CONFIG.vanillaBookMode.get();
     }
 }

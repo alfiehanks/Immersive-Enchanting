@@ -16,7 +16,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -24,6 +28,7 @@ import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -161,6 +166,16 @@ public class ServerPayloadHandler {
 
                     if (key != null) {
                         unlockedEnchantments.add(key);
+                    }
+                } else if (ServerConfig.isVanillaBookModeEnabled() && book.getItem() instanceof EnchantedBookItem) {
+                    ListTag storedEnchantments = EnchantedBookItem.getEnchantments(book);
+                    for (int i = 0; i < storedEnchantments.size(); i++) {
+                        CompoundTag tag = storedEnchantments.getCompound(i);
+                        ResourceLocation enchantmentRL = ResourceLocation.tryParse(tag.getString("id"));
+                        if (enchantmentRL != null) {
+                            ResourceKey<Enchantment> key = ResourceKey.create(Registries.ENCHANTMENT, enchantmentRL);
+                            unlockedEnchantments.add(key);
+                        }
                     }
                 }
             }
