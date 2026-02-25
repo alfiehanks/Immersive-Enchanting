@@ -50,7 +50,7 @@ public class ImmersiveEnchanting {
         ModBlocks.register(modEventBus);
 
         context.registerConfig(ModConfig.Type.CLIENT, ClientConfig.CONFIG_SPEC);
-        context.registerConfig(ModConfig.Type.SERVER, ServerConfig.CONFIG_SPEC);
+        context.registerConfig(ModConfig.Type.COMMON, ServerConfig.CONFIG_SPEC);
     }
 
     public static HolderLookup<Enchantment> getEnchantmentHolderLookup(RegistryAccess access) {
