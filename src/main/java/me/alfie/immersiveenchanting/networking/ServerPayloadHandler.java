@@ -188,8 +188,14 @@ public class ServerPayloadHandler {
                 if (book.getItem() == ModItems.ANCIENT_BOOK.get()) {
                     ResourceKey<Enchantment> key = AncientBook.getEnchantment(book, level);
                     if (key != null) {
-                        // Ancient books have no level concept - treat as level 1
-                        highestFoundLevel.merge(key, 1, Math::max);
+                        // Ancient books have no level concept - use the enchantment's full max level
+                        // so that bookUnlockMode still behaves correctly (modes 0/1 would otherwise
+                        // always cap at level 1, making higher levels permanently inaccessible).
+                        RegistryAccess registryAccess = level.registryAccess();
+                        Registry<Enchantment> enchantmentRegistry = ImmersiveEnchanting.getEnchantmentRegistry(registryAccess);
+                        Enchantment enchantment = enchantmentRegistry.get(key);
+                        int maxLevel = (enchantment != null) ? enchantment.getMaxLevel() : 1;
+                        highestFoundLevel.merge(key, maxLevel, Math::max);
                     }
                 } else if (ServerConfig.isVanillaBookModeEnabled() && book.getItem() instanceof EnchantedBookItem) {
                     ListTag storedEnchantments = EnchantedBookItem.getEnchantments(book);
