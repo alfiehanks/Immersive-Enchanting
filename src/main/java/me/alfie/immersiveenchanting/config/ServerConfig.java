@@ -52,6 +52,8 @@ public class ServerConfig {
 
         bookUnlockMode = builder
                 .comment("Controls how many enchantment levels are unlocked when a book is placed in a nearby chiseled bookshelf.\n" +
+                        "  Note: This setting only has a meaningful effect when vanillaBookMode is enabled, since vanilla enchanted books carry level information.\n" +
+                        "  With Ancient Books (vanillaBookMode = false), all modes behave the same as mode 2, as Ancient Books carry no level information.\n" +
                         "  0 = Restrictive: only the exact level of the book is unlocked (e.g. Efficiency III unlocks only level 3).\n" +
                         "  1 = Default: all levels up to and including the book's level are unlocked (e.g. Efficiency III unlocks levels 1, 2, and 3).\n" +
                         "  2 = Permissive: all levels of the enchantment are unlocked regardless of the book's level (e.g. Efficiency III unlocks all Efficiency levels).")
