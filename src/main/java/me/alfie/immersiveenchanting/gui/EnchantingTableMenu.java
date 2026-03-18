@@ -1,6 +1,8 @@
 package me.alfie.immersiveenchanting.gui;
 
+import me.alfie.immersiveenchanting.datapack.EnchantmentCostRegistry;
 import me.alfie.immersiveenchanting.item.ModItems;
+import me.alfie.immersiveenchanting.util.CostHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.network.FriendlyByteBuf;
@@ -11,13 +13,16 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 
+import java.awt.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class EnchantingTableMenu extends AbstractContainerMenu {
@@ -115,12 +120,16 @@ public class EnchantingTableMenu extends AbstractContainerMenu {
             }
             // ---- PLAYER INVENTORY ----
             else {
+                List<Item> enchantingFuels = CostHelper.getItems(EnchantmentCostRegistry
+                        .getRegistry(player.level())
+                        .getEnchantingFuels().levels.values().stream().toList());
+
                 // Try tool → slot 0
                 if (stackInSlot.getItem().isEnchantable(stackInSlot) || stackInSlot.is(ModItems.ANCIENT_BOOK.get())) {
                     if (!this.moveItemStackTo(stackInSlot, 0, 1, false)) return ItemStack.EMPTY;
                 }
                 // Try enchanting fuel → slot 1 (Uses #neoforge:enchanting_fuels tag)
-                else if (stackInSlot.is(Tags.Items.ENCHANTING_FUELS)) {
+                else if (enchantingFuels.contains(stackInSlot.getItem())) {
                     if (!this.moveItemStackTo(stackInSlot, 1, 2, false)) return ItemStack.EMPTY;
                 }
                 // Everything else → cost slot (slot 2)

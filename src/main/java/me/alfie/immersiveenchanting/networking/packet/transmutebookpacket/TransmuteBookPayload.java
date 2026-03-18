@@ -75,7 +75,6 @@ public class TransmuteBookPayload implements PayloadHandler<TransmuteBookPacket>
             if (hasEnoughCost && !isBookReplicated) {
                 if(player.hasInfiniteMaterials()) validCost = CostEntry.EMPTY;
                 assert validCost != null;
-
                 CostHelper.deductCost(validCost, costSlotItemStack, player);
 
                 AncientBook.setStoredEnchantment(ancientBookStack, randomEnchantment);

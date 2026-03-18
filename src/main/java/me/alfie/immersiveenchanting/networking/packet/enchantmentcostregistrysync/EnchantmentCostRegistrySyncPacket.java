@@ -117,6 +117,10 @@ public record EnchantmentCostRegistrySyncPacket(
                 registry.getInternalRegistry().put(EnchantmentCostRegistry.InternalCosts.REPLICATE, cost);
                 continue;
             }
+            if(enchantmentId.equals(EnchantmentCostRegistry.InternalCosts.ENCHANTING_FUELS.getId())) {
+                registry.getInternalRegistry().put(EnchantmentCostRegistry.InternalCosts.ENCHANTING_FUELS, cost);
+                continue;
+            }
 
             //If enchantment...
             //Id to RL

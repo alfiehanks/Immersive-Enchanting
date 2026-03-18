@@ -118,7 +118,7 @@ dependencies {
     compileOnly "curse.maven:jade-324717:6853386" // 15.10.3
     compileOnly "curse.maven:reliquary-reincarnations-241319:7358887"
 
-    implementation "curse.maven:vein-mining-431611:5579900"
+    //implementation "curse.maven:vein-mining-431611:5579900"
     //implementation "curse.maven:enchantment-descriptions-250419:7039849"
     //implementation "curse.maven:bookshelf-228525:7335846"
     //implementation "curse.maven:prickle-1023259:6961457"

@@ -1,6 +1,7 @@
 package me.alfie.immersiveenchanting.util;
 
 import me.alfie.immersiveenchanting.datapack.EnchantmentCostDatapack;
+import me.alfie.immersiveenchanting.datapack.EnchantmentCostRegistry;
 import me.alfie.immersiveenchanting.datapack.cost.CostDefinition;
 import me.alfie.immersiveenchanting.datapack.cost.CostEntry;
 import me.alfie.immersiveenchanting.datapack.cost.CostGroup;
@@ -15,6 +16,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,60 +45,8 @@ public class CostHelper {
         return id.startsWith("#");
     }
 
-    /**
-     * Check if a list of items is a valid cost.
-     * @param node
-     * @param items
-     * @param playerXp
-     * @return
-     */
-    public static boolean isCostValid(CostDefinition node, List<ItemStack> items, int playerXp) {
-        if(node instanceof CostEntry entry) {
-            boolean hasItem = false;
-
-            //Check item
-            ItemStack costStack = entry.asItemStack();
-            for(ItemStack stack : items) {
-                if(stack.is(costStack.getItem())) {
-                    //Check amount
-                    if (stack.getCount() >= costStack.getCount()) {
-                        hasItem = true;
-                        break;
-                    }
-                }
-            }
-
-            //Check XP
-            boolean hasXp = playerXp >= entry.xpLevels();
-            return hasItem && hasXp;
-
-        } else if(node instanceof CostGroup composite) {
-            if(composite.type() == GroupType.ANY_OF) {
-                //Any child is enough
-                for(CostDefinition child : composite.children()) {
-                    if(isCostValid(child, items, playerXp)) return true;
-                }
-                return false;
-            } else {
-                //All children must be valid
-                for(CostDefinition child : composite.children()) {
-                    if(!isCostValid(child, items, playerXp)) return false;
-                }
-                return true;
-            }
-        }
-
-        //Never reached
-        return false;
-    }
-
     public static boolean isCostValid(CostEntry costEntry) {
         return costEntry != null;
-    }
-
-    public static boolean isEnchantingFuelValid(ItemStack enchantingFuel) {
-        List<Item> validEnchantingFuels = EnchantmentCostDatapack.getValidEnchantingFuels();
-        return validEnchantingFuels.contains(enchantingFuel.getItem());
     }
 
     /**
@@ -140,15 +91,46 @@ public class CostHelper {
     }
 
     /**
-     * Deducts items/xp for a valid cost
+     * Deducts items from the cost slot.<br>
+     * Deducts XP from the player.<br>
+     * Deducts items from the enchanting fuel slot.
      * @param validCost
-     * @param itemStack
+     * @param validEnchantingFuel
+     * @param costStack
+     * @param enchantingFuelStack
      * @param player
      */
     public static void deductCost(CostEntry validCost,
-                                  ItemStack itemStack,
+                                  CostEntry validEnchantingFuel,
+                                  ItemStack costStack,
+                                  ItemStack enchantingFuelStack,
                                   Player player) {
-        itemStack.shrink(validCost.amount());
+        costStack.shrink(validCost.amount());
+        enchantingFuelStack.shrink(validEnchantingFuel.amount());
         player.giveExperienceLevels(-validCost.xpLevels());
+    }
+
+    public static void deductCost(CostEntry validCost,
+                                  ItemStack costStack,
+                                  Player player) {
+        deductCost(validCost, CostEntry.EMPTY, costStack, ItemStack.EMPTY, player);
+    }
+
+    public static List<Item> getItems(List<CostDefinition> definitions) {
+        List<Item> items = new ArrayList<>();
+        for (CostDefinition definition : definitions) {
+            collectItems(definition, items);
+        }
+        return items;
+    }
+
+    private static void collectItems(CostDefinition definition, List<Item> items) {
+        if (definition instanceof CostEntry entry) {
+            items.add(entry.asItem());
+        } else if (definition instanceof CostGroup group) {
+            for (CostDefinition child : group.children()) {
+                collectItems(child, items);
+            }
+        }
     }
 }

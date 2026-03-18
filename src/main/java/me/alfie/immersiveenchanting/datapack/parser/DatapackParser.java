@@ -55,7 +55,10 @@ public class DatapackParser {
             if(CostHelper.isItemTag(node.get(JsonProperty.ITEM.getKey()).getAsString())) {
                 String itemTag = node.get(JsonProperty.ITEM.getKey()).getAsString();
                 int amount = node.get(JsonProperty.AMOUNT.getKey()).getAsInt();
-                int xpLevels = node.get(JsonProperty.XP_LEVELS.getKey()).getAsInt();
+                int xpLevels = node.has(JsonProperty.XP_LEVELS.getKey())
+                        ? node.get(JsonProperty.XP_LEVELS.getKey()).getAsInt()
+                        : 0;
+
 
                 ImmersiveEnchanting.LOGGER.info("Parsing item tag at {}", node);
                 return new CostGroup(new ArrayList<>(), GroupType.ANY_OF,

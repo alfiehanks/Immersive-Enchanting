@@ -12,6 +12,7 @@
 
   "gui.immersiveenchanting.cost": "Materials: ",
   "gui.immersiveenchanting.no_materials_required": "None",
+  "gui.immersiveenchanting.enchanting_fuel": "Fuel: ",
   "gui.immersiveenchanting.cost.xp": "Levels: ",
   "gui.immersiveenchanting.equipped": "Equipped.",
   "gui.immersiveenchanting.locked_enchantment": "???",

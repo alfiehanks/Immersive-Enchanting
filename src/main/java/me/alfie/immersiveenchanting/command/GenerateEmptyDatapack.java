@@ -73,8 +73,11 @@ public enum GenerateEmptyDatapack implements ImmersiveEnchantingCommand {
                                     JsonObject transmuteJson = buildCostJson(1);
                                     File replicateFile = new File(ieFolder, "replicate.json");
                                     JsonObject replicateJson = buildCostJson(1);
+                                    File enchantingFuelsFile = new File(ieFolder, "enchanting_fuels.json");
+                                    JsonObject enchantingFuelsJson = buildCostJson(5);
                                     writeJsonFile(transmuteFile, transmuteJson);
                                     writeJsonFile(replicateFile, replicateJson);
+                                    writeJsonFile(enchantingFuelsFile, enchantingFuelsJson);
 
 
                                     //Generate pack.mcmeta

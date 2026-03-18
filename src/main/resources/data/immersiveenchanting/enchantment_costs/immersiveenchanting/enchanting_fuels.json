@@ -1,0 +1,44 @@
+{
+  "levels": {
+    "1": {
+      "item": "#neoforge:enchanting_fuels",
+      "amount": 1
+    },
+    "2": {
+      "item": "#neoforge:enchanting_fuels",
+      "amount": 2
+    },
+    "3": {
+      "item": "#neoforge:enchanting_fuels",
+      "amount": 3
+    },
+    "4": {
+      "item": "#neoforge:enchanting_fuels",
+      "amount": 4
+    },
+    "5": {
+      "item": "#neoforge:enchanting_fuels",
+      "amount": 5
+    },
+    "6": {
+      "item": "#neoforge:enchanting_fuels",
+      "amount": 6
+    },
+    "7": {
+      "item": "#neoforge:enchanting_fuels",
+      "amount": 7
+    },
+    "8": {
+      "item": "#neoforge:enchanting_fuels",
+      "amount": 8
+    },
+    "9": {
+      "item": "#neoforge:enchanting_fuels",
+      "amount": 9
+    },
+    "10": {
+      "item": "#neoforge:enchanting_fuels",
+      "amount": 10
+    }
+  }
+}

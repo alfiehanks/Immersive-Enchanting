@@ -8,13 +8,18 @@ import me.alfie.immersiveenchanting.gui.core.tab.enchanting.node.NodeTooltip;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.enchantment.Enchantment;
+import org.joml.Vector2i;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EnchantingNodeTooltip extends NodeTooltip {
 
 
     public int lastBars = 0;
+    private CostEntry currentRenderedFuel;
+    private Vector2i fuelStackPos = new Vector2i(0, 0);
+    public List<Component> fuelDescriptionComponents = new ArrayList<>() {{add(Component.empty());}};
 
     public EnchantingNodeTooltip(EnchantingNode node,
                                  EnchantingTableScreen screen,
@@ -33,5 +38,29 @@ public class EnchantingNodeTooltip extends NodeTooltip {
 
 
         tooltipTitle.setTitleText(titleText);
+    }
+
+    public Vector2i getFuelStackPos() {
+        return fuelStackPos;
+    }
+
+    public void setFuelStackPos(Vector2i fuelStackPos) {
+        this.fuelStackPos = fuelStackPos;
+    }
+
+    public void setCurrentRenderedFuel(CostEntry currentRenderedFuel) {
+        this.currentRenderedFuel = currentRenderedFuel;
+
+        CostEntry renderedCost = getCurrentRenderedFuel();
+
+        if(renderedCost.getCostItemTag().isPresent()) {
+            String itemTag = renderedCost.getCostItemTag().get().itemTag();
+            fuelDescriptionComponents.set(0, Component.translatable("gui.immersiveenchanting.accepts_any_tag", itemTag)
+                    .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
+        }
+    }
+
+    public CostEntry getCurrentRenderedFuel() {
+        return currentRenderedFuel;
     }
 }

@@ -18,6 +18,7 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.enchantment.Enchantment;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -74,11 +75,17 @@ public class EnchantmentCostDatapack extends SimpleJsonResourceReloadListener {
                 if(parts[1].equals("transmute")) {
                     key = EnchantmentCostRegistry.InternalCosts.TRANSMUTE;
                     EnchantmentCostRegistry.getServerRegistry().getInternalRegistry().put(key, enchantmentCost);
+                    ImmersiveEnchanting.LOGGER.info("Loaded costs for transmute.");
                 } else if(parts[1].equals("replicate")) {
                     key = EnchantmentCostRegistry.InternalCosts.REPLICATE;
                     EnchantmentCostRegistry.getServerRegistry().getInternalRegistry().put(key, enchantmentCost);
+                    ImmersiveEnchanting.LOGGER.info("Loaded costs for replicate.");
+                } else if(parts[1].equals("enchanting_fuels")) {
+                    key = EnchantmentCostRegistry.InternalCosts.ENCHANTING_FUELS;
+                    EnchantmentCostRegistry.getServerRegistry().getInternalRegistry().put(key, enchantmentCost);
+                    ImmersiveEnchanting.LOGGER.info("Loaded costs for enchanting fuels.");
                 }
-                ImmersiveEnchanting.LOGGER.info("Loaded costs for transmute and replicate.");
+
 
             //Normal enchantment costs
             } else {
@@ -117,18 +124,22 @@ public class EnchantmentCostDatapack extends SimpleJsonResourceReloadListener {
      * @param registry
      */
     public static void expandTags(EnchantmentCostRegistry registry) {
-        Map<ResourceKey<Enchantment>, EnchantmentCost> costRegistry = registry.getCostRegistry();
+        expandCosts(registry.getCostRegistry().values());
+        expandCosts(registry.getInternalRegistry().values());
 
-        for(EnchantmentCost cost : costRegistry.values()) {
+        ImmersiveEnchanting.LOGGER.info("Expanded tags for " + registry.getName());
+    }
+
+    private static void expandCosts(Collection<EnchantmentCost> costs) {
+        for (EnchantmentCost cost : costs) {
             for (int i = 0; i < cost.getHighestLevel(); i++) {
-                CostDefinition costDefinition = cost.getCostForLevel(i+1);
+                CostDefinition costDefinition = cost.getCostForLevel(i + 1);
 
-                if(costDefinition instanceof CostGroup costGroup) {
+                if (costDefinition instanceof CostGroup costGroup) {
                     expandCostGroupTagsRecursive(costGroup);
                 }
             }
         }
-        ImmersiveEnchanting.LOGGER.info("Expanded tags for " + registry.getName());
     }
 
     /**

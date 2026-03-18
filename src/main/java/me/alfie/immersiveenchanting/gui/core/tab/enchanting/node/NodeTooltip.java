@@ -11,7 +11,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.joml.Vector2i;
 
@@ -39,7 +38,7 @@ public class NodeTooltip {
     public List<CostEntry> validCosts;
     private CostEntry currentRenderedCost;
     private Vector2i costStackPos = new Vector2i(0, 0);
-    public List<Component> stackDescriptionComponents = new ArrayList<>() {{add(Component.empty());}};
+    public List<Component> costDescriptionComponents = new ArrayList<>() {{add(Component.empty());}};
 
 
     public NodeTooltip(Node node, EnchantingTableScreen screen, List<CostEntry> validCosts) {
@@ -145,10 +144,6 @@ public class NodeTooltip {
         return this.validCosts;
     }
 
-    private ItemStack getCostStack(int index) {
-        return validCosts.get(index).asItemStack();
-    }
-
     /**
      * Returns the currently active element from a list, cycling through it
      * based on system time and a given interval in milliseconds.
@@ -174,12 +169,16 @@ public class NodeTooltip {
 
         if(renderedCost.getCostItemTag().isPresent()) {
             String itemTag = renderedCost.getCostItemTag().get().itemTag();
-            stackDescriptionComponents.set(0, Component.translatable("gui.immersiveenchanting.accepts_any_tag", itemTag)
+            costDescriptionComponents.set(0, Component.translatable("gui.immersiveenchanting.accepts_any_tag", itemTag)
                     .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
         }
     }
 
+
+
     public CostEntry getCurrentRenderedCost() {
         return currentRenderedCost;
     }
+
+
 }

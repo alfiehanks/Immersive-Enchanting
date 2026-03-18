@@ -52,20 +52,32 @@ public class EnchantItemPayload implements PayloadHandler<EnchantItemPacket> {
         ItemStack costSlotItemStack = enchantingTableMenu.getCostSlotItem();
         List<ItemStack> insertedItems = new ArrayList<>();
         insertedItems.add(costSlotItemStack);
+        List<ItemStack> insertedFuels = new ArrayList<>();
+        insertedFuels.add(enchantingTableMenu.getEnchantingFuelSlotItem());
 
+        //Check cost
         CostDefinition costNode = EnchantmentCostRegistry.getServerRegistry().getEnchantmentCost(packet.enchantment()).getCostForLevel(packet.enchantmentLevel());
         CostEntry validCost = CostHelper.findValidCost(costNode, insertedItems, playerXp);
 
+        //Check fuel
+        CostDefinition enchantingFuelNode = EnchantmentCostRegistry.getServerRegistry().getEnchantingFuels().getCostForLevel(packet.enchantmentLevel());
+        CostEntry validEnchantingFuel = CostHelper.findValidCost(enchantingFuelNode, insertedFuels, playerXp);
+
         boolean hasEnoughCost = player.hasInfiniteMaterials()
                 || (CostHelper.isCostValid(validCost)
-                    && CostHelper.isEnchantingFuelValid(enchantingTableMenu.getEnchantingFuelSlotItem()));
+                    && CostHelper.isCostValid(validEnchantingFuel));
 
         if (hasEnoughCost) {
-            if(player.hasInfiniteMaterials()) validCost = CostEntry.EMPTY;
+            if(player.hasInfiniteMaterials()) {
+                validCost = CostEntry.EMPTY;
+                validEnchantingFuel = CostEntry.EMPTY;
+            }
 
             assert validCost != null;
-            enchantingTableMenu.getEnchantingFuelSlotItem().shrink(1);
-            CostHelper.deductCost(validCost, costSlotItemStack, player);
+            assert validEnchantingFuel != null;
+            CostHelper.deductCost(validCost, validEnchantingFuel,
+                    costSlotItemStack, enchantingTableMenu.getEnchantingFuelSlotItem(),
+                    player);
 
             itemToEnchant.enchant(enchantmentHolder, packet.enchantmentLevel());
 

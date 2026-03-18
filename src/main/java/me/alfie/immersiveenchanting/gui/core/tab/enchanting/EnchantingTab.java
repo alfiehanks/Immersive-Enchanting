@@ -235,6 +235,7 @@ public class EnchantingTab {
 
     public void renderTooltipItemStackCost(GuiGraphics guiGraphics, int mouseX, int mouseY) {
         if(nodeTooltip == null) return;
+        //Cost stack
         if (screen.isMouseOver(
                 mouseX, mouseY,
                 nodeTooltip.getCostStackPos().x, nodeTooltip.getCostStackPos().y,
@@ -247,8 +248,8 @@ public class EnchantingTab {
                     asItemStack()
                     .getTooltipLines(Item.TooltipContext.EMPTY, null, TooltipFlag.ADVANCED);
 
-            if(!(Objects.equals(nodeTooltip.stackDescriptionComponents.getFirst(), Component.empty()))) {
-                lines.add(1, nodeTooltip.stackDescriptionComponents.getFirst());
+            if(!(Objects.equals(nodeTooltip.costDescriptionComponents.getFirst(), Component.empty()))) {
+                lines.add(1, nodeTooltip.costDescriptionComponents.getFirst());
             }
 
             guiGraphics.renderTooltip(Minecraft.getInstance().font,
@@ -260,6 +261,36 @@ public class EnchantingTab {
 
             guiGraphics.pose().popPose();
         }
+
+        //Fuel stack
+        if(nodeTooltip instanceof EnchantingNodeTooltip enchantingNodeTooltip) {
+            if (screen.isMouseOver(
+                    mouseX, mouseY,
+                    enchantingNodeTooltip.getFuelStackPos().x, enchantingNodeTooltip.getFuelStackPos().y,
+                    16, 16)) {
+
+                guiGraphics.pose().pushPose();
+                guiGraphics.pose().translate(0, 0, 500);
+
+                List<Component> lines = enchantingNodeTooltip.getCurrentRenderedFuel().
+                        asItemStack()
+                        .getTooltipLines(Item.TooltipContext.EMPTY, null, TooltipFlag.ADVANCED);
+
+                if(!(Objects.equals(enchantingNodeTooltip.fuelDescriptionComponents.getFirst(), Component.empty()))) {
+                    lines.add(1, enchantingNodeTooltip.fuelDescriptionComponents.getFirst());
+                }
+
+                guiGraphics.renderTooltip(Minecraft.getInstance().font,
+                        lines,
+                        enchantingNodeTooltip.getCurrentRenderedFuel().asItemStack().getTooltipImage(),
+                        enchantingNodeTooltip.getCurrentRenderedFuel().asItemStack(),
+                        mouseX,
+                        mouseY);
+
+                guiGraphics.pose().popPose();
+            }
+        }
+
     }
 
     private void renderHoveredNode(Node node, GuiGraphics guiGraphics) {

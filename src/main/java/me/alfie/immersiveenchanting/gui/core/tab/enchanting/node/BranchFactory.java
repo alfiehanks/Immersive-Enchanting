@@ -79,6 +79,7 @@ public class BranchFactory {
         List<NodeBranch> branches = new ArrayList<>();
 
         Set<Holder<Enchantment>> unlockedEnchantments = screen.getMenu().getUnlockedEnchantments();
+        if(!currentItemStack.has(DataComponents.STORED_ENCHANTMENTS)) return branches;
         Set<Holder<Enchantment>> ancientBookEnchantment = currentItemStack.get(DataComponents.STORED_ENCHANTMENTS).keySet();
 
         //Check if the enchantment stored in this ancient book is also unlocked (in the bookshelf)
