@@ -12,6 +12,7 @@
 
   "gui.immersiveenchanting.cost": "必要素材: ",
   "gui.immersiveenchanting.no_materials_required": "なし",
+  "gui.immersiveenchanting.enchanting_fuel": "必要燃料: ",
   "gui.immersiveenchanting.cost.xp": "必要レベル: ",
   "gui.immersiveenchanting.equipped": "付与済み",
   "gui.immersiveenchanting.locked_enchantment": "???",
