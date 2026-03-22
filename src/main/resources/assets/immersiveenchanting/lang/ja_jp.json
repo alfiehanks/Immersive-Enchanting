@@ -10,9 +10,9 @@
   "lore.immersiveenchanting.replicated": "複製品",
   "itemGroup.immersiveenchanting.enchanting": "エンチャント",
 
-  "gui.immersiveenchanting.cost": "必要素材: ",
+  "gui.immersiveenchanting.cost": "素材: ",
   "gui.immersiveenchanting.no_materials_required": "なし",
-  "gui.immersiveenchanting.enchanting_fuel": "必要燃料: ",
+  "gui.immersiveenchanting.enchanting_fuel": "燃料: ",
   "gui.immersiveenchanting.cost.xp": "必要レベル: ",
   "gui.immersiveenchanting.equipped": "付与済み",
   "gui.immersiveenchanting.locked_enchantment": "???",
