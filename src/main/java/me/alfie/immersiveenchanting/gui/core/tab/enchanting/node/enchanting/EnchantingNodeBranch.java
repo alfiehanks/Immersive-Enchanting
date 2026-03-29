@@ -30,7 +30,7 @@ public class EnchantingNodeBranch extends NodeBranch {
         this.isBranchUnlocked = isBranchUnlocked;
         this.player = player;
 
-        ResourceLocation iconTexture = ResourceLocation.fromNamespaceAndPath("immersiveenchanting", "textures/item/ancient_book.png");
+        ResourceLocation iconTexture = new ResourceLocation("immersiveenchanting", "textures/item/ancient_book.png");
         ResourceKey<Enchantment> enchantmentKey = enchantmentHolder.unwrapKey().get();
         ResourceLocation enchantmentRL = enchantmentKey.location();
 

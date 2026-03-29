@@ -35,7 +35,7 @@ public class CostHelper {
      */
     public static TagKey<Item> getItemTag(String itemTag) {
         itemTag = itemTag.replaceFirst("#", "");
-        TagKey<Item> tag = TagKey.create(Registries.ITEM, ResourceLocation.parse(itemTag));
+        TagKey<Item> tag = TagKey.create(Registries.ITEM, new ResourceLocation(itemTag));
         return tag;
     }
 

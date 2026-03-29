@@ -18,7 +18,7 @@ public class EnchantingNode extends Node {
     private final int enchantmentLevel;
     private final ResourceKey<Enchantment> enchantment;
     private final Holder<Enchantment> enchantmentHolder;
-    private final ResourceLocation LOCKED_ICON = ResourceLocation.fromNamespaceAndPath("immersiveenchanting", "textures/gui/enchantment_icons/locked_enchantment.png");
+    private final ResourceLocation LOCKED_ICON = new ResourceLocation("immersiveenchanting", "textures/gui/enchantment_icons/locked_enchantment.png");
     public final EnchantingNodeBranch branch;
 
     public EnchantingNode(NodeType nodeType, ResourceLocation iconTexture,

@@ -22,7 +22,7 @@ public class ModPackets {
 
     private static final String PROTOCOL_VERSION = "1";
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
-            ResourceLocation.fromNamespaceAndPath(ImmersiveEnchanting.MODID, "main"),
+            new ResourceLocation(ImmersiveEnchanting.MODID, "main"),
             () -> PROTOCOL_VERSION,
             PROTOCOL_VERSION::equals,
             PROTOCOL_VERSION::equals

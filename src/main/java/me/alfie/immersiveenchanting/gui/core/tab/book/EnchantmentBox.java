@@ -82,7 +82,7 @@ public class EnchantmentBox {
     private void renderIcon(GuiGraphics guiGraphics, int x, int y) {
         int xPos;
         if(bookTab.screen.getMenu().isEnchantmentUnlocked(enchantmentHolder)) {
-            ResourceLocation icon = ResourceLocation.fromNamespaceAndPath("immersiveenchanting", "textures/item/ancient_book.png");
+            ResourceLocation icon = new ResourceLocation("immersiveenchanting", "textures/item/ancient_book.png");
 
             //Try to get an icon
             ResourceLocation enchantmentId = enchantmentHolder.unwrapKey().get().location();

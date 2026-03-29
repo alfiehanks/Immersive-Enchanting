@@ -55,7 +55,7 @@ public class EnchantmentMetadataRegistry {
 
                 String enchantmentPath = fileName.replace(".png", ""); // remove extension
 
-                ResourceLocation enchantmentRL = ResourceLocation.fromNamespaceAndPath(enchantmentNamespace, enchantmentPath);
+                ResourceLocation enchantmentRL = new ResourceLocation(enchantmentNamespace, enchantmentPath);
 
                 ICONS.put(enchantmentRL, fileRL);
             }

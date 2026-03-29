@@ -33,7 +33,7 @@ public enum Sprite {
     private final ResourceLocation location;
 
     Sprite(String path) {
-        this.location = ResourceLocation.fromNamespaceAndPath(ImmersiveEnchanting.MODID, path);
+        this.location = new ResourceLocation(ImmersiveEnchanting.MODID, path);
     }
 
     public ResourceLocation get() {

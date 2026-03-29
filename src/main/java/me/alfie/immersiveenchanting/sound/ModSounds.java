@@ -14,11 +14,11 @@ public class ModSounds {
 
     public static final RegistryObject<SoundEvent> BIBLIOCLASM = SOUND_EVENTS.register("biblioclasm",
             () -> SoundEvent.createVariableRangeEvent(
-                    ResourceLocation.fromNamespaceAndPath(ImmersiveEnchanting.MODID, "biblioclasm")));
+                    new ResourceLocation(ImmersiveEnchanting.MODID, "biblioclasm")));
 
     public static final RegistryObject<SoundEvent> ARCANE_MEMORIES = SOUND_EVENTS.register("arcane_memories",
             () -> SoundEvent.createVariableRangeEvent(
-                    ResourceLocation.fromNamespaceAndPath(ImmersiveEnchanting.MODID, "arcane_memories")));
+                    new ResourceLocation(ImmersiveEnchanting.MODID, "arcane_memories")));
 
     public static void register(IEventBus eventBus) {
         SOUND_EVENTS.register(eventBus);

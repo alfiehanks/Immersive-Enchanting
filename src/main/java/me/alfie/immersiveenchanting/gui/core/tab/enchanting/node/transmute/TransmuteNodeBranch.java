@@ -13,7 +13,7 @@ public class TransmuteNodeBranch extends NodeBranch {
         super(screen, branchAngle);
 
 
-        ResourceLocation iconTexture = ResourceLocation.fromNamespaceAndPath("immersiveenchanting", "textures/item/ancient_book.png");
+        ResourceLocation iconTexture = new ResourceLocation("immersiveenchanting", "textures/item/ancient_book.png");
 
         NodeType nodeType = NodeType.ADVANCED;
         boolean nodeUnlocked = true;

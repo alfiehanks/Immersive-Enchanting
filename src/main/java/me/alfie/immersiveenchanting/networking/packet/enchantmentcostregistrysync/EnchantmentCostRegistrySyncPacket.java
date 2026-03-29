@@ -145,7 +145,7 @@ public class EnchantmentCostRegistrySyncPacket {
 
             //If enchantment...
             //Id to RL
-            ResourceLocation resourceLocation = ResourceLocation.parse(enchantmentId);
+            ResourceLocation resourceLocation = new ResourceLocation(enchantmentId);
             ResourceKey<Enchantment> key = ResourceKey.create(Registries.ENCHANTMENT, resourceLocation);
 
             //Put in reg

@@ -11,7 +11,7 @@ public class ReplicateNodeBranch extends NodeBranch {
         super(screen, branchAngle);
 
         NodeType nodeType = NodeType.ADVANCED;
-        ResourceLocation iconTexture = ResourceLocation.fromNamespaceAndPath("immersiveenchanting", "textures/item/ancient_book.png");
+        ResourceLocation iconTexture = new ResourceLocation("immersiveenchanting", "textures/item/ancient_book.png");
 
         ReplicateNode node = new ReplicateNode(
                 nodeType,

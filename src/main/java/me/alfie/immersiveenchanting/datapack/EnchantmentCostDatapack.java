@@ -89,7 +89,7 @@ public class EnchantmentCostDatapack extends SimpleJsonResourceReloadListener {
             //Normal enchantment costs
             } else {
                 // Parse JSON into an EnchantmentCost
-                ResourceLocation enchantmentResourceLocation = ResourceLocation.fromNamespaceAndPath(parts[0], parts[1]);
+                ResourceLocation enchantmentResourceLocation = new ResourceLocation(parts[0], parts[1]);
 
                 //Put into server registry
                 EnchantmentCostRegistry.getServerRegistry().getCostRegistry().put(ResourceKey.create(Registries.ENCHANTMENT, enchantmentResourceLocation), enchantmentCost);
