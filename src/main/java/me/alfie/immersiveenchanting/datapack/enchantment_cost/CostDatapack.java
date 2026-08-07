@@ -117,8 +117,8 @@ public class CostDatapack extends ModDatapack<CostData, CostRegistry> {
 
         //Check if any in costs are null
         List<String> brokenIds = new ArrayList<>();
-        for (Holder<Enchantment> enchantmentHolder : CostRegistry.server().getAllEnchantmentHolders()) {
-            CostData enchantmentCost = CostRegistry.server().get(enchantmentHolder);
+        for (Holder<Enchantment> enchantmentHolder : CostRegistry.client().getAllEnchantmentHolders()) {
+            CostData enchantmentCost = CostRegistry.client().get(enchantmentHolder);
             CostLevels levelCosts = enchantmentCost.levelCosts();
 
             for (int level = 0; level < levelCosts.maxLevel(); level++) {
