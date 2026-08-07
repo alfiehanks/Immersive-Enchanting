@@ -2,7 +2,7 @@ package me.alfie.immersiveenchanting.datapack.node_sounds;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import me.alfie.alfinolib.datapacks.ClientDatapackManager;
+import me.alfie.alfinolib.datapacks.client.ClientDatapackManager;
 import me.alfie.alfinolib.networking.codec.StreamCodec;
 import me.alfie.alfinolib.util.ResourceId;
 import net.minecraft.network.RegistryFriendlyByteBuf;

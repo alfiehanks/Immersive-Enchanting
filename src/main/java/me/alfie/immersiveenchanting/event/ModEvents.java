@@ -32,10 +32,6 @@ public class ModEvents {
      * </ul>
      */
     public static void register(IEventBus modEventBus) {
-        NeoForge.EVENT_BUS.addListener(CostDatapack::register);
-        NeoForge.EVENT_BUS.addListener(NodeSoundsDatapack::register);
-        NeoForge.EVENT_BUS.addListener(ModIconsDatapack::register);
-
         NeoForge.EVENT_BUS.addListener(CostDatapack::resolveClientRegistry);
         NeoForge.EVENT_BUS.addListener(CostDatapack::resolveServerRegistry);
 

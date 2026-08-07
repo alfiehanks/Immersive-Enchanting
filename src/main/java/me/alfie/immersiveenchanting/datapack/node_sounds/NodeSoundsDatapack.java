@@ -16,10 +16,13 @@ import java.util.Map;
 public class NodeSoundsDatapack extends ModDatapack<NodeSoundMap, NodeSoundMap> {
 
     public static DatapackKey<NodeSoundMap> KEY = new DatapackKey<>(ImmersiveEnchanting.MODID, "sounds");
+    public static DatapackDefinition<NodeSoundMap> DEFINITION = new DatapackDefinition<>(KEY, NodeSoundMap.STREAM_CODEC);
+
     private NodeSoundMap DATA = new NodeSoundMap(new HashMap<>());
 
-    protected NodeSoundsDatapack(RegistryAccess registryAccess) {
-        super(NodeSoundMap.CODEC, KEY, NodeSoundMap.STREAM_CODEC, registryAccess);
+
+    public NodeSoundsDatapack(RegistryAccess registryAccess) {
+        super(NodeSoundMap.CODEC, DEFINITION, registryAccess);
     }
 
     @Override public NodeSoundMap getData() {
@@ -33,9 +36,5 @@ public class NodeSoundsDatapack extends ModDatapack<NodeSoundMap, NodeSoundMap> 
         DATA = input.getOrDefault(key, new NodeSoundMap(new HashMap<>()));
 
         ImmersiveEnchanting.LOGGER.debug("Found {}", String.valueOf(DATA));
-    }
-
-    public static void register(AddServerReloadListenersEvent event) {
-        DatapackRegistry.register(event, () -> new NodeSoundsDatapack(event.getRegistryAccess()));
     }
 }
