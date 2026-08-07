@@ -9,6 +9,7 @@ import me.alfie.alfinolib.util.codec.ItemCost;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -39,7 +40,7 @@ public record Cost(ItemCost itemCost, int xpLevels) {
      * Returns this cost if it is valid, null if none found
      */
     public @Nullable Cost test(ItemStack testStack, Player player) {
-        if(itemCost().isValid(testStack) && player.experienceLevel >= xpLevels) {
+        if( (itemCost().isValid(testStack) || itemCost().getItems().contains(Items.AIR)) && player.experienceLevel >= xpLevels) {
             return this;
         }
         return null;
