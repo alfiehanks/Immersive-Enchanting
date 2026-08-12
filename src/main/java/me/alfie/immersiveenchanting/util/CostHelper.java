@@ -5,13 +5,16 @@ import me.alfie.immersiveenchanting.datapack.enchantment_cost.CostRegistry;
 import me.alfie.immersiveenchanting.datapack.enchantment_cost.codec.Cost;
 import me.alfie.immersiveenchanting.datapack.enchantment_cost.codec.CostHolder;
 import me.alfie.immersiveenchanting.gui.EnchantingTableMenu;
+import me.alfie.alfinolib.util.codec.ItemCost;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 
+import java.util.IdentityHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CostHelper {
     public static boolean canEnchant(EnchantingTableMenu menu,
@@ -72,23 +75,69 @@ public class CostHelper {
         CostHolder costHolder = CostRegistry.server().get(costId).levelCosts().getLevel(costLevel);
         CostHolder fuelHolder = CostRegistry.server().get(CostRegistry.ENCHANTING_FUELS).levelCosts().getLevel(costLevel);
 
-        Cost validCost = null;
-        Cost validFuel = null;
-
-
         for(Cost cost : costHolder.costs()) {
-            validCost = cost.test(menu.getCostSlot().getItem(), player);
+            if(player.experienceLevel < cost.xpLevels()) continue;
+
+            for(Cost fuel : fuelHolder.costs()) {
+                if(player.experienceLevel < fuel.xpLevels()) continue;
+
+                PaymentPlan payment = new PaymentPlan(player.getInventory().items);
+                if(!payment.reserve(cost.itemCost(), menu.getCostSlot().getItem())) continue;
+                if(!payment.reserve(fuel.itemCost(), menu.getFuelSlot().getItem())) continue;
+
+                payment.consume();
+                menu.getCostSlot().setChanged();
+                menu.getFuelSlot().setChanged();
+                player.getInventory().setChanged();
+                player.giveExperienceLevels(-cost.xpLevels());
+                return true;
+            }
         }
 
-        for(Cost cost : fuelHolder.costs()) {
-            validFuel = cost.test(menu.getFuelSlot().getItem(), player);
+        return false;
+    }
+
+    /** Builds an atomic payment across a legacy table slot and the player's main inventory. */
+    private static final class PaymentPlan {
+        private final List<ItemStack> inventoryStacks;
+        private final Map<ItemStack, Integer> reservedCounts = new IdentityHashMap<>();
+
+        private PaymentPlan(List<ItemStack> inventoryStacks) {
+            this.inventoryStacks = inventoryStacks;
         }
 
-        if(validCost == null || validFuel == null) return false;
+        private boolean reserve(ItemCost itemCost, ItemStack tableStack) {
+            if(itemCost.getItems().contains(Items.AIR) || itemCost.count() <= 0) return true;
 
-        validCost.itemCost().tryConsume(menu.getCostSlot().getItem());
-        validFuel.itemCost().tryConsume(menu.getFuelSlot().getItem());
-        player.giveExperienceLevels(-validCost.xpLevels());
-        return true;
+            int remaining = itemCost.count();
+            remaining = reserveFromStack(itemCost, tableStack, remaining);
+
+            for(ItemStack stack : inventoryStacks) {
+                if(remaining == 0) break;
+                remaining = reserveFromStack(itemCost, stack, remaining);
+            }
+
+            return remaining == 0;
+        }
+
+        private int reserveFromStack(ItemCost itemCost, ItemStack stack, int remaining) {
+            if(stack.isEmpty() || !matchesIgnoringCount(itemCost, stack)) return remaining;
+
+            int alreadyReserved = reservedCounts.getOrDefault(stack, 0);
+            int available = stack.getCount() - alreadyReserved;
+            int amount = Math.min(remaining, Math.max(available, 0));
+            if(amount > 0) reservedCounts.put(stack, alreadyReserved + amount);
+            return remaining - amount;
+        }
+
+        private boolean matchesIgnoringCount(ItemCost itemCost, ItemStack stack) {
+            ItemStack candidate = stack.copy();
+            candidate.setCount(Math.max(itemCost.count(), 1));
+            return itemCost.isValid(candidate);
+        }
+
+        private void consume() {
+            reservedCounts.forEach(ItemStack::shrink);
+        }
     }
 }

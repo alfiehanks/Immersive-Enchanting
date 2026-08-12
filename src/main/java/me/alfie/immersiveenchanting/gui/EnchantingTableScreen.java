@@ -85,7 +85,7 @@ public class EnchantingTableScreen extends CommonAbstractContainerScreen<@NotNul
     protected void init() {
         super.init();
         this.camera = new CanvasCamera(this,getGuiLeft()+4, getGuiTop()+4);
-        camera.centerCameraOnCanvas();
+        camera.centerCameraOnContent();
     }
 
     @Override
@@ -269,7 +269,6 @@ public class EnchantingTableScreen extends CommonAbstractContainerScreen<@NotNul
                 enchantingTab.setDisplay(EnchantingTab.Display.MOD_FILTERS);
                 FxHelper.playTabDown(player());
                 rebuildBranches();
-                resetCamera();
                 tooltipManager().unlockTooltip();
             }
         } else {
@@ -277,7 +276,6 @@ public class EnchantingTableScreen extends CommonAbstractContainerScreen<@NotNul
                 enchantingTab.setDisplay(EnchantingTab.Display.ENCHANTMENTS);
                 FxHelper.playTabUp(player());
                 rebuildBranches();
-                resetCamera();
             }
         }
 
@@ -299,19 +297,18 @@ public class EnchantingTableScreen extends CommonAbstractContainerScreen<@NotNul
         if (!menu.getToolSlot().getItem().isEmpty()) FxHelper.playToolSlotChanged(player());
 
         if(camera() == null) return;
-        if(newStack.getItem().equals(lastToolSlotStack.getItem())) return;
         camera().setDraggingEnabled(!newStack.isEmpty());
-        resetCamera();
     }
 
     public void rebuildBranches() {
-        rebuildBranches(lastToolSlotStack);
+        rebuildBranches(getMenu().getToolSlot().getItem());
     }
 
     private void rebuildBranches(ItemStack newStack) {
         enchantingTab.branchManager().buildBranches(newStack);
-        canvas().setSizeToFitNodes(CostRegistry.client().getHighestLevel());
+        canvas().setSizeToFitNodes(enchantingTab.branchManager().getMaxBranchDepth());
         enchantingTab.branchManager().positionBranches();
+        resetCamera();
     }
 
     /**
@@ -320,7 +317,7 @@ public class EnchantingTableScreen extends CommonAbstractContainerScreen<@NotNul
     private void resetCamera() {
         if(camera() == null) return;
         camera().setZoom(1f);
-        camera().centerCameraOnCanvas();
+        camera().centerCameraOnContent();
     }
 
     /**

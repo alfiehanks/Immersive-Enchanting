@@ -1,0 +1,7 @@
+{
+  "levels": {
+    "1": [{"item_cost": {"item": "minecraft:potato", "count": 16}}],
+    "2": [{"item_cost": {"item": "minecraft:baked_potato", "count": 16}}],
+    "3": [{"item_cost": {"item": "minecraft:poisonous_potato", "count": 4}}]
+  }
+}

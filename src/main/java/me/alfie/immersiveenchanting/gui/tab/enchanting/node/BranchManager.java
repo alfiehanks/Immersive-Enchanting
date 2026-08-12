@@ -35,6 +35,14 @@ public class BranchManager {
         return result;
     }
 
+    /** Returns the greatest number of nodes in any currently rendered branch. */
+    public int getMaxBranchDepth() {
+        return cachedBranches.stream()
+                .mapToInt(branch -> branch.nodes().size())
+                .max()
+                .orElse(1);
+    }
+
     /**
      * You must buildBranches() before positionBranches()!
      * @param stack

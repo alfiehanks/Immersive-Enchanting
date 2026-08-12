@@ -16,7 +16,6 @@ import me.alfie.immersiveenchanting.item.ModItems;
 import me.alfie.immersiveenchanting.util.EnchantmentTextureHelper;
 import me.alfie.immersiveenchanting.util.EnchantmentUtil;
 import net.minecraft.core.Holder;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -149,8 +148,6 @@ public class BranchFactory {
     }
 
     private static void buildEnchantingBranch(BuildBranchesEvent event, Holder<Enchantment> enchantmentHolder) {
-        List<NodeTemplate> nodeTemplates = new ArrayList<>();
-
         int maxLevel;
         if(event.costRegistry().isRegistered(enchantmentHolder)) {
             //Use the max level from the cost registry, which may be higher than the enchantment's inherent max level if the datapack adds extra levels.
@@ -160,31 +157,26 @@ public class BranchFactory {
             maxLevel = enchantmentHolder.value().getMaxLevel();
         }
 
-        for (int enchantmentLevel = 0; enchantmentLevel < maxLevel; enchantmentLevel++) {
-            int equippedLevel = EnchantmentUtil.getEnchantmentLevel(event.getStack(), enchantmentHolder);
-            NodeState state = equippedLevel > enchantmentLevel ? NodeState.OBTAINED : NodeState.UNOBTAINED;
-            NodeTier tier = enchantmentLevel+1 == maxLevel ? NodeTier.ELITE : NodeTier.BASIC;
+        int equippedLevel = EnchantmentUtil.getEnchantmentLevel(event.getStack(), enchantmentHolder);
+        int displayedLevel = equippedLevel < maxLevel ? equippedLevel + 1 : Math.max(equippedLevel, 1);
+        NodeState state = equippedLevel > 0 ? NodeState.OBTAINED : NodeState.UNOBTAINED;
+        NodeTier tier = displayedLevel >= maxLevel ? NodeTier.ELITE : NodeTier.BASIC;
 
-            if(!event.getCanvas().screen().getMenu().isEnchantmentAvailable(enchantmentHolder))
-                state = NodeState.LOCKED;
+        if(!event.getCanvas().screen().getMenu().isEnchantmentAvailable(enchantmentHolder))
+            state = NodeState.LOCKED;
 
-
-            ResourceId enchantmentId = EnchantmentUtil.toId(enchantmentHolder);
-            nodeTemplates.add(new NodeTemplate(
-                    Enchantment.getFullname(enchantmentHolder, enchantmentLevel+1),
-                    enchantmentLevel,
-                    state,
-                    tier,
-                    new SpriteIcon(EnchantmentTextureHelper.getTexture(enchantmentId)),
-                    EnchantmentNodeData.create(enchantmentId, enchantmentLevel+1)
-            ));
-
-
-            if(equippedLevel < enchantmentLevel+1) break;
-        }
+        ResourceId enchantmentId = EnchantmentUtil.toId(enchantmentHolder);
+        NodeTemplate nodeTemplate = new NodeTemplate(
+                Enchantment.getFullname(enchantmentHolder, displayedLevel),
+                displayedLevel - 1,
+                state,
+                tier,
+                new SpriteIcon(EnchantmentTextureHelper.getTexture(enchantmentId)),
+                EnchantmentNodeData.create(enchantmentId, displayedLevel)
+        );
 
         event.addBranch(BranchBuilder.of(event.getCanvas(), EnchantmentUtil.toId(enchantmentHolder))
-                .nodes(nodeTemplates)
+                .node(nodeTemplate)
                 .build());
     }
 

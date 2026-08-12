@@ -30,22 +30,26 @@ public class EnchantLayoutExtension implements DescriptionLayoutExtension {
         Node node = tooltip.node();
         EnchantingTableScreen screen = tooltip.screen();
 
-        if(node.isState(NodeState.UNOBTAINED)) {
-            DescriptionHelper.insertCostLines(tooltip, description, 0);
-        } else if(node.isState(NodeState.OBTAINED)) {
-            if(screen.tooltipManager().isHoldingTooltip()) {
-                description.insertLine(0, new RemovingLine(tooltip));
-                description.insertLine(1, new RemoveProgressLine(tooltip));
-            } else {
-                description.insertLine(0, new EquippedLine(tooltip));
+        description.insertLine(0, new CurrentLevelLine(tooltip));
 
-                if(tooltip.node().canRemove()) {
-                    description.insertLine(1, new RemoveHintLine(tooltip));
-                }
-
-            }
+        if(screen.tooltipManager().isHoldingTooltip()) {
+            description.insertLine(1, new RemovingLine(tooltip));
+            description.insertLine(2, new RemoveProgressLine(tooltip));
         } else if(node.isState(NodeState.LOCKED)) {
-            description.insertLine(0, new UnavailableEnchantmentLine(tooltip));
+            description.insertLine(1, new UnavailableEnchantmentLine(tooltip));
+        } else if(node.canUpgrade()) {
+            int costLine = 1;
+            if(node.canRemove()) {
+                description.insertLine(costLine, new RemoveHintLine(tooltip));
+                costLine++;
+            }
+            DescriptionHelper.insertCostLines(tooltip, description, costLine);
+        } else if(node.isState(NodeState.OBTAINED)) {
+            description.insertLine(1, new EquippedLine(tooltip));
+
+            if(node.canRemove()) {
+                description.insertLine(2, new RemoveHintLine(tooltip));
+            }
         }
     }
 }

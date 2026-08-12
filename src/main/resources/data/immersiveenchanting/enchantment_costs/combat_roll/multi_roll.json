@@ -1,0 +1,7 @@
+{
+  "levels": {
+    "1": [{"item_cost": {"item": "minecraft:slime_ball", "count": 8}}],
+    "2": [{"item_cost": {"item": "minecraft:rabbit_foot", "count": 2}}],
+    "3": [{"item_cost": {"item": "minecraft:breeze_rod", "count": 1}}]
+  }
+}

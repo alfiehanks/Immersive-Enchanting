@@ -9,7 +9,8 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
-public record RemoveHintLine(NodeTooltip tooltip) implements DescriptionLine {
+/** Displays the enchantment level already present on the item. */
+public record CurrentLevelLine(NodeTooltip tooltip) implements DescriptionLine {
     @Override
     public void render(GuiGraphicsX gx, int lineX, int lineY, MousePos mousePos) {
         DescriptionHelper.text(gx, getText(), lineX, lineY);
@@ -17,10 +18,9 @@ public record RemoveHintLine(NodeTooltip tooltip) implements DescriptionLine {
 
     @Override
     public @NotNull Component getText() {
-        String translationKey = tooltip.node().canUpgrade()
-                ? "immersiveenchanting.tooltip.desc.shift_hold_to_remove_enchantment"
-                : "immersiveenchanting.tooltip.desc.hold_to_remove_enchantment";
-        return Component.translatable(translationKey)
-                .withStyle(ChatFormatting.GRAY);
+        return Component.translatable(
+                "immersiveenchanting.tooltip.desc.current_level",
+                tooltip.node().getEquippedEnchantmentLevel()
+        ).withStyle(ChatFormatting.LIGHT_PURPLE);
     }
 }

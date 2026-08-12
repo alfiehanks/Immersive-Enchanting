@@ -107,13 +107,27 @@ public class Node extends CanvasRenderable {
      * (i.e. it is the top-most equipped level) and removal is enabled in server config.
      */
     public boolean canRemove() {
-        return getPosition() + 1 == EnchantmentUtil.getEnchantmentLevel(
-                canvas().screen()
-                        .getMenu()
-                        .getToolSlot()
-                        .getItem(),
-                EnchantmentUtil.toHolder(branchId(), canvas().screen().registryAccess()))
-                && ServerConfig.isEnchantmentRemovalAllowed();
+        return getEquippedEnchantmentLevel() > 0 && ServerConfig.isEnchantmentRemovalAllowed();
+    }
+
+    /**
+     * Returns whether this stacked enchantment node represents an available next level.
+     */
+    public boolean canUpgrade() {
+        if(!(data().value() instanceof EnchantmentNodeData enchantmentData)) return false;
+        return enchantmentData.level() > getEquippedEnchantmentLevel();
+    }
+
+    /**
+     * Returns the enchantment level currently present on the item, or zero for other node types.
+     */
+    public int getEquippedEnchantmentLevel() {
+        if(!(data().value() instanceof EnchantmentNodeData enchantmentData)) return 0;
+
+        return EnchantmentUtil.getEnchantmentLevel(
+                canvas().screen().getMenu().getToolSlot().getItem(),
+                EnchantmentUtil.toHolder(enchantmentData.enchantmentId(), canvas().screen().registryAccess())
+        );
     }
 
     public NodeBranch getParentBranch() {

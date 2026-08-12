@@ -88,13 +88,12 @@ public class Canvas implements ScreenEventListener {
     /**
      * Resizes the canvas so that nodes at the furthest possible branch depth are not clipped.
      *
-     * @param highestEnchantmentLevel the maximum enchantment level across all registered enchantments,
-     *                                used to determine how far branches can extend
+     * @param maxBranchDepth the greatest number of nodes in a rendered branch
      */
-    public void setSizeToFitNodes(int highestEnchantmentLevel) {
-        highestEnchantmentLevel = Math.max(5, highestEnchantmentLevel); //Prevent canvas too small
+    public void setSizeToFitNodes(int maxBranchDepth) {
+        maxBranchDepth = Math.max(5, maxBranchDepth); //Prevent canvas too small at minimum zoom
 
-        int tileCount = ((BranchManager.getNodeStep() * 2) * highestEnchantmentLevel + TILE_SIZE - 1) / TILE_SIZE;
+        int tileCount = ((BranchManager.getNodeStep() * 2) * maxBranchDepth + TILE_SIZE - 1) / TILE_SIZE;
         int tileMargin = 2;
         setSize(tileCount + tileMargin);
     }
@@ -111,6 +110,27 @@ public class Canvas implements ScreenEventListener {
 
     public Vector2i getCenter() {
         return new Vector2i(width / 2, height / 2);
+    }
+
+    /**
+     * Returns the center of the currently rendered item and node bounds. Unlike the canvas
+     * midpoint, this remains meaningful when a filtered or asymmetric set of nodes is shown.
+     */
+    public Vector2f getContentCenter() {
+        final float centralHalfSize = 16f;
+        float minX = getCenter().x() - centralHalfSize;
+        float minY = getCenter().y() - centralHalfSize;
+        float maxX = getCenter().x() + centralHalfSize;
+        float maxY = getCenter().y() + centralHalfSize;
+
+        for(var node : screen().enchantingTab().branchManager().getAllNodes()) {
+            minX = Math.min(minX, node.canvasX());
+            minY = Math.min(minY, node.canvasY());
+            maxX = Math.max(maxX, node.canvasX() + node.getScaledLength(node.WIDTH));
+            maxY = Math.max(maxY, node.canvasY() + node.getScaledLength(node.HEIGHT));
+        }
+
+        return new Vector2f((minX + maxX) / 2f, (minY + maxY) / 2f);
     }
 
     /**

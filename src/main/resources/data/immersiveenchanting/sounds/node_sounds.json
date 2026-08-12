@@ -11,6 +11,72 @@
       "pitch": 1.0
     },
 
+    "combat_roll:acrobat": {
+      "sound": "minecraft:entity.player.small_fall",
+      "volume": 0.5,
+      "pitch": 1.2
+    },
+    "combat_roll:longfooted": {
+      "sound": "minecraft:entity.rabbit.jump",
+      "volume": 0.5,
+      "pitch": 1.0
+    },
+    "combat_roll:multi_roll": {
+      "sound": "minecraft:block.slime_block.step",
+      "volume": 0.5,
+      "pitch": 1.1
+    },
+    "create:capacity": {
+      "sound": "minecraft:item.bottle.fill_dragonbreath",
+      "volume": 0.5,
+      "pitch": 0.8
+    },
+    "create:potato_recovery": {
+      "sound": "minecraft:entity.item.pickup",
+      "volume": 0.5,
+      "pitch": 1.2
+    },
+    "dungeons_arise:discharge": {
+      "sound": "minecraft:entity.lightning_bolt.thunder",
+      "volume": 0.5,
+      "pitch": 1.2
+    },
+    "dungeons_arise:ensnaring": {
+      "sound": "minecraft:entity.evoker_fangs.attack",
+      "volume": 0.5,
+      "pitch": 1.0
+    },
+    "dungeons_arise:lolths_curse": {
+      "sound": "minecraft:entity.spider.ambient",
+      "volume": 0.5,
+      "pitch": 0.8
+    },
+    "dungeons_arise:purification": {
+      "sound": "minecraft:block.fire.extinguish",
+      "volume": 0.5,
+      "pitch": 1.2
+    },
+    "dungeons_arise:voltaic_shot": {
+      "sound": "minecraft:entity.lightning_bolt.impact",
+      "volume": 0.5,
+      "pitch": 1.0
+    },
+    "farmersdelight:backstabbing": {
+      "sound": "minecraft:entity.player.attack.crit",
+      "volume": 0.5,
+      "pitch": 1.0
+    },
+    "passablefoliage:leaf_walker": {
+      "sound": "minecraft:block.grass.step",
+      "volume": 0.5,
+      "pitch": 1.0
+    },
+    "supplementaries:stasis": {
+      "sound": "minecraft:block.amethyst_block.chime",
+      "volume": 0.5,
+      "pitch": 0.8
+    },
+
     "minecraft:aqua_affinity": {
       "sound": "minecraft:entity.axolotl.attack",
       "volume": 0.5,
