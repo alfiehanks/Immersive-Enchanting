@@ -15,7 +15,6 @@
   "immersiveenchanting.tooltip.desc.no_materials_required": "None",
   "immersiveenchanting.tooltip.desc.enchanting_fuel": "Fuel: ",
   "immersiveenchanting.tooltip.desc.xp_levels": "Levels: ",
-  "immersiveenchanting.tooltip.desc.current_level": "Current level: %s",
   "immersiveenchanting.tooltip.desc.equipped": "Equipped.",
   "immersiveenchanting.tooltip.desc.unavailable_enchantment": "Unknown",
 
@@ -39,7 +38,6 @@
 
   "immersiveenchanting.tooltip.desc.accepts_any_tag": "Accepts any: %d",
   "immersiveenchanting.tooltip.desc.hold_to_remove_enchantment": "Hold to remove",
-  "immersiveenchanting.tooltip.desc.shift_hold_to_remove_enchantment": "Shift + hold to remove",
   "immersiveenchanting.tooltip.desc.removing_enchantment": "Removing...",
   "immersiveenchanting.tab.book": "Ancient Books",
   "immersiveenchanting.tab.enchanting": "Enchanting",

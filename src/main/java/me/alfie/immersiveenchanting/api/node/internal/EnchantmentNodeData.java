@@ -10,7 +10,6 @@ import me.alfie.immersiveenchanting.gui.tab.enchanting.node.Node;
 import me.alfie.immersiveenchanting.gui.tab.enchanting.node.NodeState;
 import me.alfie.immersiveenchanting.networking.EnchantPacket;
 import me.alfie.immersiveenchanting.util.EnchantmentUtil;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.Holder;
 import net.minecraft.world.item.enchantment.Enchantment;
 
@@ -39,11 +38,9 @@ public record EnchantmentNodeData(ResourceId enchantmentId, int level) implement
                     Node node = context.node();
                     EnchantingTableScreen screen = context.screen();
 
-                    if(node.isState(NodeState.LOCKED)) return;
-
-                    if (node.canRemove() && (!node.canUpgrade() || Screen.hasShiftDown())) {
+                    if (node.isState(NodeState.OBTAINED) && node.canRemove()) {
                         screen.tooltipManager().startHold(node);
-                    } else if(node.canUpgrade()) {
+                    } else {
                         Holder<Enchantment> enchantmentHolder = EnchantmentUtil.toHolder(data.enchantmentId(), screen.registryAccess());
                         Networking.sendToServer(new EnchantPacket(enchantmentHolder.getKey(), data.level()));
                     }

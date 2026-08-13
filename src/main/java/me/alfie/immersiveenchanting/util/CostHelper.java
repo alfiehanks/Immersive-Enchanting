@@ -4,6 +4,7 @@ import me.alfie.alfinolib.util.ResourceId;
 import me.alfie.immersiveenchanting.datapack.enchantment_cost.CostRegistry;
 import me.alfie.immersiveenchanting.datapack.enchantment_cost.codec.Cost;
 import me.alfie.immersiveenchanting.datapack.enchantment_cost.codec.CostHolder;
+import me.alfie.immersiveenchanting.compat.BundledNotSiloedCompat;
 import me.alfie.immersiveenchanting.gui.EnchantingTableMenu;
 import me.alfie.alfinolib.util.codec.ItemCost;
 import net.minecraft.core.Holder;
@@ -13,6 +14,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 
 import java.util.IdentityHashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -81,11 +83,11 @@ public class CostHelper {
             for(Cost fuel : fuelHolder.costs()) {
                 if(player.experienceLevel < fuel.xpLevels()) continue;
 
-                PaymentPlan payment = new PaymentPlan(player.getInventory().items);
+                PaymentPlan payment = new PaymentPlan(player);
                 if(!payment.reserve(cost.itemCost(), menu.getCostSlot().getItem())) continue;
                 if(!payment.reserve(fuel.itemCost(), menu.getFuelSlot().getItem())) continue;
 
-                payment.consume();
+                if(!payment.consume()) continue;
                 menu.getCostSlot().setChanged();
                 menu.getFuelSlot().setChanged();
                 player.getInventory().setChanged();
@@ -97,13 +99,18 @@ public class CostHelper {
         return false;
     }
 
-    /** Builds an atomic payment across a legacy table slot and the player's main inventory. */
+    /** Builds an atomic payment across a legacy table slot and the player's complete inventory. */
     private static final class PaymentPlan {
         private final List<ItemStack> inventoryStacks;
         private final Map<ItemStack, Integer> reservedCounts = new IdentityHashMap<>();
+        private final BundledNotSiloedCompat.InventoryAccess bundledInventory;
+        private final List<BundledNotSiloedCompat.InventoryEntry> bundledEntries;
+        private final List<BundledReservation> bundledReservations = new ArrayList<>();
 
-        private PaymentPlan(List<ItemStack> inventoryStacks) {
-            this.inventoryStacks = inventoryStacks;
+        private PaymentPlan(Player player) {
+            bundledInventory = BundledNotSiloedCompat.inventory(player).orElse(null);
+            bundledEntries = bundledInventory == null ? List.of() : bundledInventory.entries();
+            inventoryStacks = bundledInventory == null ? player.getInventory().items : List.of();
         }
 
         private boolean reserve(ItemCost itemCost, ItemStack tableStack) {
@@ -112,9 +119,13 @@ public class CostHelper {
             int remaining = itemCost.count();
             remaining = reserveFromStack(itemCost, tableStack, remaining);
 
-            for(ItemStack stack : inventoryStacks) {
-                if(remaining == 0) break;
-                remaining = reserveFromStack(itemCost, stack, remaining);
+            if(bundledInventory != null) {
+                remaining = reserveFromBundledInventory(itemCost, remaining);
+            } else {
+                for(ItemStack stack : inventoryStacks) {
+                    if(remaining == 0) break;
+                    remaining = reserveFromStack(itemCost, stack, remaining);
+                }
             }
 
             return remaining == 0;
@@ -136,8 +147,52 @@ public class CostHelper {
             return itemCost.isValid(candidate);
         }
 
-        private void consume() {
+        private int reserveFromBundledInventory(ItemCost itemCost, int remaining) {
+            for(BundledNotSiloedCompat.InventoryEntry entry : bundledEntries) {
+                if(remaining == 0) break;
+
+                ItemStack representative = entry.representative();
+                if(!matchesIgnoringCount(itemCost, representative)) continue;
+
+                BundledReservation reservation = getBundledReservation(representative);
+                long available = entry.quantity() - reservation.amount;
+                int amount = (int)Math.min(remaining, Math.max(available, 0));
+                reservation.amount += amount;
+                remaining -= amount;
+            }
+            return remaining;
+        }
+
+        private BundledReservation getBundledReservation(ItemStack prototype) {
+            for(BundledReservation reservation : bundledReservations) {
+                if(ItemStack.isSameItemSameComponents(reservation.prototype, prototype)) return reservation;
+            }
+
+            BundledReservation reservation = new BundledReservation(prototype.copyWithCount(1));
+            bundledReservations.add(reservation);
+            return reservation;
+        }
+
+        private boolean consume() {
+            for(BundledReservation reservation : bundledReservations) {
+                if(bundledInventory.count(reservation.prototype) < reservation.amount) return false;
+            }
+
+            for(BundledReservation reservation : bundledReservations) {
+                if(bundledInventory.extract(reservation.prototype, reservation.amount) != reservation.amount) return false;
+            }
+
             reservedCounts.forEach(ItemStack::shrink);
+            return true;
+        }
+
+        private static final class BundledReservation {
+            private final ItemStack prototype;
+            private int amount;
+
+            private BundledReservation(ItemStack prototype) {
+                this.prototype = prototype;
+            }
         }
     }
 }

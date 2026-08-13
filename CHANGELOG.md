@@ -4,11 +4,8 @@
 
 ### Changed
 
-- Replaced separate per-level enchantment branches with a single stacked node that represents the enchantment's current level and next upgrade.
-- Added the current enchantment level and the full material cost of the next level to node details.
-- Recentered the enchanting canvas on its visible item and enchantment nodes whenever the interface is refreshed.
 - Allowed enchanting costs and fuel to be paid from the player's inventory, including split stacks. Existing enchanting-table input slots remain supported.
-- Kept enchantment removal accessible on upgradeable nodes with Shift + hold; max-level nodes continue to use hold-to-remove.
+- Added Bundled Not Siloed 1.2 compatibility so enchanting payments can use both its visible inventory and stowed capacity-inventory stacks.
 
 ### Added
 
@@ -25,3 +22,4 @@
 
 - Minecraft 1.21.1 with NeoForge 21.1.x.
 - Optional-mod data is loaded only when the corresponding enchantments are available.
+- Bundled Not Siloed 1.2 or newer is supported as an optional inventory provider.

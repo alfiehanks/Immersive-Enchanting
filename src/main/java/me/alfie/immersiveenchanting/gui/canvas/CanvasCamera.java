@@ -95,14 +95,9 @@ public class CanvasCamera implements ScreenEventListener {
      * aligns with the canvas center.
      */
     public void centerCameraOnCanvas() {
-        centerCameraOnContent();
-    }
-
-    /** Centers the viewport on the bounds of the item and nodes currently being rendered. */
-    public void centerCameraOnContent() {
         setPos(
-                screen.canvas().getContentCenter().x - (float) VIEWPORT_WIDTH / (2 * zoom),
-                screen.canvas().getContentCenter().y - (float) VIEWPORT_HEIGHT / (2 * zoom)
+                screen.canvas().getCenter().x - (float) VIEWPORT_WIDTH / (2 * zoom),
+                screen.canvas().getCenter().y - (float) VIEWPORT_HEIGHT / (2 * zoom)
         );
         clampPosition();
     }

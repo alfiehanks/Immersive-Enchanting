@@ -17,10 +17,7 @@ public record RemoveHintLine(NodeTooltip tooltip) implements DescriptionLine {
 
     @Override
     public @NotNull Component getText() {
-        String translationKey = tooltip.node().canUpgrade()
-                ? "immersiveenchanting.tooltip.desc.shift_hold_to_remove_enchantment"
-                : "immersiveenchanting.tooltip.desc.hold_to_remove_enchantment";
-        return Component.translatable(translationKey)
+        return Component.translatable("immersiveenchanting.tooltip.desc.hold_to_remove_enchantment")
                 .withStyle(ChatFormatting.GRAY);
     }
 }
