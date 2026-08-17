@@ -1,0 +1,84 @@
+{
+  "itemGroup.immersiveenchanting.enchanting": "附魔",
+  "block.immersiveenchanting.creative_bookshelf": "创造书架",
+  "item.immersiveenchanting.ancient_book": "远古之书",
+  "item.immersiveenchanting.music_disc_biblioclasm": "音乐唱片",
+  "item.immersiveenchanting.music_disc_biblioclasm.desc": "Alfie - 焚书",
+  "item.immersiveenchanting.music_disc_arcane_memories": "音乐唱片",
+  "item.immersiveenchanting.music_disc_arcane_memories.desc": "Alfie - 奥术回忆",
+
+  "item.immersiveenchanting.ancient_book.desc.enchantment": "蕴含知识：",
+  "item.immersiveenchanting.ancient_book.desc.enchantment_added_by": "附属模组：%s",
+  "item.immersiveenchanting.ancient_book.desc.replicated": "已复制",
+
+  "immersiveenchanting.tooltip.desc.materials": "材料：",
+  "immersiveenchanting.tooltip.desc.no_materials_required": "无",
+  "immersiveenchanting.tooltip.desc.enchanting_fuel": "燃料：",
+  "immersiveenchanting.tooltip.desc.xp_levels": "经验等级：",
+  "immersiveenchanting.tooltip.desc.equipped": "已装备。",
+  "immersiveenchanting.tooltip.desc.unavailable_enchantment": "未知",
+
+  "immersiveenchanting.tooltip.desc.replicate": "复制一本此远古之书。",
+  "immersiveenchanting.tooltip.desc.transmute": "更改此远古之书的附魔。",
+  "immersiveenchanting.tooltip.desc.transmute_hint": "你必须先在书架上放入一本相同附魔的远古之书。",
+  "immersiveenchanting.tooltip.desc.not_transmutable": "已复制的远古之书无法被转化！",
+
+  "immersiveenchanting.tooltip.desc.cost_load_error": "enchantment_costs/%s.json 缺失或无效！",
+  "immersiveenchanting.tooltip.desc.fuels_load_error": "enchantment_costs/immersiveenchanting/enchanting_fuels.json 缺失或无效！",
+
+  "immersiveenchanting.tooltip.desc.no_fuel_data": "找不到此附魔等级的附魔燃料消耗数据，请检查 enchanting_fuels.json",
+  "immersiveenchanting.tooltip.desc.no_cost_data": "找不到此附魔等级的消耗数据，请检查 %s.json",
+
+
+  "immersiveenchanting.tooltip.title.unavailable_enchantment": "？？？",
+  "immersiveenchanting.tooltip.title.replicate": "复制",
+  "immersiveenchanting.tooltip.title.transmute": "转化",
+
+  "immersiveenchanting.action_bar.transmute_success": "已转化为 %s",
+
+  "immersiveenchanting.tooltip.desc.accepts_any_tag": "可接受任意：%d",
+  "immersiveenchanting.tooltip.desc.hold_to_remove_enchantment": "长按以移除",
+  "immersiveenchanting.tooltip.desc.removing_enchantment": "正在移除……",
+  "immersiveenchanting.tab.book": "远古之书",
+  "immersiveenchanting.tab.enchanting": "附魔",
+
+  "immersiveenchanting.filter.unlocked": "显示已解锁",
+  "immersiveenchanting.filter.locked": "显示未解锁",
+  "immersiveenchanting.label.total_enchantments": "%d 个附魔",
+
+  "immersiveenchanting.mod_filter.all": "全部",
+  "immersiveenchanting.mod_filter.desc": "点击以显示 %s 的附魔",
+  "immersiveenchanting.mod_filter.selected": "正在显示 %s 的附魔",
+
+
+  "immersiveenchanting.command.disabled_enchantments": "以下附魔已禁用或缺少附魔消耗文件：%s",
+  "immersiveenchanting.command.enabled_enchantments": "以下附魔已启用：%s",
+  "immersiveenchanting.command.generate_empty_datapack": "成功！点击以复制已生成的文件夹路径。",
+  "immersiveenchanting.command.give_random_ancient_book": "已向选中的玩家发放随机远古之书！",
+  "immersiveenchanting.command.no_target": "未指定目标！",
+
+  "immersiveenchanting.warn.invalid_cost_file": "以下附魔消耗文件无效：%s，详情请查看日志。",
+  "immersiveenchanting.warn.cost_files_missing": "存在缺失或无效的附魔消耗文件。请查看日志了解受影响的附魔。若要消除此警告，请补充或修复对应的消耗文件。",
+  "immersiveenchanting.warn.too_many_cost_files": "存在无法识别的附魔消耗文件。请查看日志了解受影响的附魔。若要消除此警告，请删除这些消耗文件。",
+  "immersiveenchanting.warn.enchanting_fuels_missing": "附魔燃料消耗文件（enchantment_costs/immersiveenchanting/enchanting_fuels.json）缺失或无效！请添加一个有效的附魔燃料消耗文件。",
+
+  "immersiveenchanting.configuration.general": "通用",
+  "immersiveenchanting.configuration.bookshelves": "书架搜索设置",
+  "immersiveenchanting.configuration.ancientbooks": "远古之书设置",
+  "immersiveenchanting.configuration.enchantingtable": "附魔台设置",
+  "immersiveenchanting.configuration.enchantedbooks": "原版附魔书设置",
+
+  "immersiveenchanting.config.disable_ancient_book_requirement": "关闭远古之书需求",
+  "immersiveenchanting.config.bookshelf_search_x": "书架搜索 X 轴半径",
+  "immersiveenchanting.config.bookshelf_search_y": "书架搜索 Y 轴半径",
+  "immersiveenchanting.config.bookshelf_search_z": "书架搜索 Z 轴半径",
+  "immersiveenchanting.config.show_added_by_tooltip": "显示来源模组提示",
+  "immersiveenchanting.config.allow_transmute": "允许转化远古之书",
+  "immersiveenchanting.config.allow_replicate": "允许复制远古之书",
+  "immersiveenchanting.config.allow_enchantment_removal": "允许移除附魔",
+  "immersiveenchanting.config.item_carousel_speed": "物品轮播速度",
+  "immersiveenchanting.config.play_node_hover_sounds": "播放节点悬停音效",
+  "immersiveenchanting.config.enchanted_book_loot_mode": "附魔书战利品模式",
+  "immersiveenchanting.config.obfuscate_locked_enchantments": "混淆未解锁附魔",
+  "immersiveenchanting.config.disable_enchanted_book_trades": "禁用村民附魔书交易"
+}
