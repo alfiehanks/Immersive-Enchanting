@@ -4,12 +4,15 @@ import me.alfie.immersiveenchanting.ImmersiveEnchantingClient;
 import me.alfie.immersiveenchanting.api.ApiPostEvents;
 import me.alfie.immersiveenchanting.api.description.TooltipDescriptionExtensions;
 import me.alfie.immersiveenchanting.command.ModCommands;
+import me.alfie.immersiveenchanting.compat.ModCompat;
+import me.alfie.immersiveenchanting.compat.ench_desc.EnchDescCompat;
 import me.alfie.immersiveenchanting.creativetab.ModCreativeTab;
 import me.alfie.immersiveenchanting.datapack.enchantment_cost.CostDatapack;
 import me.alfie.immersiveenchanting.datapack.mod_icons.ModIconsDatapack;
 import me.alfie.immersiveenchanting.datapack.node_sounds.NodeSoundsDatapack;
 import me.alfie.immersiveenchanting.gui.ModMenus;
 import me.alfie.immersiveenchanting.networking.ModPackets;
+import net.darkhax.enchdesc.common.impl.EnchdescMod;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.NeoForge;
 
@@ -46,6 +49,7 @@ public class ModEvents {
 
         registerPostEvents(modEventBus);
         registerInternalApiEvents(modEventBus);
+        ModCompat.registerCompatEvents(modEventBus);
     }
 
     private static void registerPostEvents(IEventBus modEventBus) {

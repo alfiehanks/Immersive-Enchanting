@@ -160,14 +160,20 @@ dependencies {
 
     /* --- Compatibility --- */
     //implementation "curse.maven:vein-mining-431611:5579900"
-    //implementation "curse.maven:enchantment-descriptions-250419:7039849"
-    //implementation "curse.maven:bookshelf-228525:7335846"
-    //implementation "curse.maven:prickle-1023259:6961457"
+
 
     //--Alfino Lib--
     compileOnly "curse.maven:alfinolib-1554698:8596074" //1.2.0
     devMainImplementation "curse.maven:alfinolib-1554698:8596074" //1.2.0
     devCompatImplementation "curse.maven:alfinolib-1554698:8596074"
+
+    //--Enchantment Descriptions [+Bookshelf, Prickle]--
+    compileOnly "curse.maven:enchantment-descriptions-250419:8693034" //21.1.11
+    devCompatImplementation "curse.maven:enchantment-descriptions-250419:8693034" //21.1.11
+    compileOnly "curse.maven:bookshelf-228525:7335846"
+    devCompatImplementation "curse.maven:bookshelf-228525:7335846"
+    compileOnly "curse.maven:prickle-1023259:6961457"
+    devCompatImplementation "curse.maven:prickle-1023259:6961457"
 
     //--Vein Mining--
     //compileOnly "curse.maven:vein-mining-431611:5579900"

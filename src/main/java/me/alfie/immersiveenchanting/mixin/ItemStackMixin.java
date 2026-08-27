@@ -1,9 +1,14 @@
 package me.alfie.immersiveenchanting.mixin;
 
 import me.alfie.immersiveenchanting.ImmersiveEnchanting;
+import me.alfie.immersiveenchanting.compat.CompatHooks;
+import me.alfie.immersiveenchanting.compat.ModCompat;
+import me.alfie.immersiveenchanting.compat.ench_desc.EnchDescCompat;
 import me.alfie.immersiveenchanting.config.ClientConfig;
 import me.alfie.immersiveenchanting.item.ModItems;
 import me.alfie.immersiveenchanting.util.EnchantmentUtil;
+import net.darkhax.enchdesc.common.impl.Config;
+import net.darkhax.enchdesc.common.impl.EnchdescMod;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentType;
@@ -89,6 +94,8 @@ public abstract class ItemStackMixin {
                                         .withStyle(ChatFormatting.BLUE)
                         );
                     }
+
+                    CompatHooks.EnchantmentDescriptions.addEnchantmentDescription(enchantmentHolder, enchantments.getLevel(enchantmentHolder), consumer);
                 }
             }
 
@@ -96,6 +103,8 @@ public abstract class ItemStackMixin {
                     Component.translatable("item.immersiveenchanting.ancient_book.desc.replicated")
                             .withStyle(ChatFormatting.GRAY)
             );
+
+
 
             ci.cancel(); //Prevent DataComponents.STORED_ENCHANTMENTS tooltip being applied normally to ancient books.
         }
