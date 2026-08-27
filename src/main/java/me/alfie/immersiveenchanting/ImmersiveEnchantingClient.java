@@ -1,6 +1,8 @@
 package me.alfie.immersiveenchanting;
 
 import me.alfie.immersiveenchanting.client.EnchantingTableItemRenderer;
+import me.alfie.immersiveenchanting.compat.ponder.EnchantingTablePonder;
+import net.createmod.ponder.foundation.PonderIndex;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.ModContainer;
@@ -14,6 +16,7 @@ public class ImmersiveEnchantingClient {
 
     public ImmersiveEnchantingClient(ModContainer container) {
         container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
+        PonderIndex.addPlugin(new EnchantingTablePonder());
     }
 
     public static void registerBlockEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {

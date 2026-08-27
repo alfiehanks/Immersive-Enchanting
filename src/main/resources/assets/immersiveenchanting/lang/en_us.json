@@ -81,5 +81,12 @@
   "immersiveenchanting.config.enchanted_book_loot_mode": "Enchanted Book Loot Mode",
   "immersiveenchanting.config.obfuscate_locked_enchantments": "Obfuscate Locked Enchantments",
   "immersiveenchanting.config.disable_enchanted_book_trades": "Disable Enchanted Book Villager Trades",
+
+  "immersiveenchanting.ponder.enchanting_table.header": "Enchanting",
+  "immersiveenchanting.ponder.enchanting_table.text_1": "Immersive Enchanting changes how you enchant. They are not random - you get to choose and craft your enchantments.",
+  "immersiveenchanting.ponder.enchanting_table.text_2": "Place Chiseled Bookshelves in the same arrangement as vanilla.",
+  "immersiveenchanting.ponder.enchanting_table.text_3": "Ancient Books can be found throughout the world. Place them into your Chiseled Bookshelves to unlock new enchantments.",
+  "immersiveenchanting.ponder.enchanting_table.text_4": "Enchantments appear in the enchanting table UI. Hover over one to see what you need to craft it!",
+
   "immersiveenchanting.jei.enchanting_table_info": "Immersive Enchanting changes enchanting mechanics. Ancient Books are now required to enchant, place them in Chiseled Bookshelves around the table. You can check enchantment ingredient requirements by pressing 'U' on an Ancient Book or ingredient."
 }

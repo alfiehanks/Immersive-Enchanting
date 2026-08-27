@@ -3,6 +3,7 @@ package me.alfie.immersiveenchanting;
 import com.mojang.logging.LogUtils;
 import me.alfie.alfinolib.datapacks.DatapackRegistry;
 import me.alfie.immersiveenchanting.block.ModBlocks;
+import me.alfie.immersiveenchanting.compat.ponder.EnchantingTablePonder;
 import me.alfie.immersiveenchanting.config.ClientConfig;
 import me.alfie.immersiveenchanting.config.ServerConfig;
 import me.alfie.immersiveenchanting.creativetab.ModCreativeTab;
@@ -17,6 +18,7 @@ import me.alfie.immersiveenchanting.item.ModItems;
 import me.alfie.immersiveenchanting.loot.ModGlobalLootModifiers;
 import me.alfie.immersiveenchanting.sound.ModSounds;
 import me.alfie.immersiveenchanting.structure.ModStructureProcessors;
+import net.createmod.ponder.foundation.PonderIndex;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
@@ -50,6 +52,8 @@ public class ImmersiveEnchanting {
 
         modContainer.registerConfig(ModConfig.Type.CLIENT, ClientConfig.CONFIG_SPEC);
         modContainer.registerConfig(ModConfig.Type.SERVER, ServerConfig.CONFIG_SPEC);
+
+
     }
 
     /**

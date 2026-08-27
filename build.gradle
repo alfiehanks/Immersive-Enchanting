@@ -19,6 +19,8 @@ group = mod_group_id
 
 repositories {
     maven { url "https://cursemaven.com" }
+    maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" }
+    maven { url = "https://maven.createmod.net" }
     // Add here additional repositories if required by some of the dependencies below.
 }
 
@@ -37,12 +39,18 @@ sourceSets {
         //Dev with AlfinoLib
         compileClasspath += sourceSets.main.output
         runtimeClasspath += sourceSets.main.output
+
+        compileClasspath += configurations.runtimeClasspath
+        runtimeClasspath += configurations.runtimeClasspath
     }
 
     devCompat {
         //Dev with all compatability mods
         compileClasspath += sourceSets.devMain.output
         runtimeClasspath += sourceSets.devMain.output
+
+        compileClasspath += configurations.runtimeClasspath
+        runtimeClasspath += configurations.runtimeClasspath
     }
 
 
@@ -154,18 +162,18 @@ configurations {
 }
 
 dependencies {
-    //Use compileOnly for dependencies on build - not shipped with this mod's JAR
-    //Use devMainImplementation for base mod testing with AlfinoLib
-    //Use devCompatImplementation for testing mod compats
-
-    /* --- Compatibility --- */
-    //implementation "curse.maven:vein-mining-431611:5579900"
-
+    //1. Use compileOnly for dependencies on build - not shipped with this mod's JAR
+    //2. Use devMainImplementation for base mod testing with AlfinoLib
+    //3. Use devCompatImplementation for testing mod compats
 
     //--Alfino Lib--
     compileOnly "curse.maven:alfinolib-1554698:8596074" //1.2.0
     devMainImplementation "curse.maven:alfinolib-1554698:8596074" //1.2.0
     devCompatImplementation "curse.maven:alfinolib-1554698:8596074"
+
+    //--Ponder--
+    implementation "net.createmod.ponder:ponder-neoforge:1.0.87+mc1.21.1" //Ponder library 1.0.87 for MC 1.21.1
+
 
     //--Enchantment Descriptions [+Bookshelf, Prickle]--
     compileOnly "curse.maven:enchantment-descriptions-250419:8693034" //21.1.11
@@ -182,7 +190,6 @@ dependencies {
     //--JEI--
     compileOnly "curse.maven:jei-238222:7391682"
     devCompatImplementation "curse.maven:jei-238222:7391682"
-
 
     //--Vein Mining--
     //compileOnly "curse.maven:vein-mining-431611:5579900"
