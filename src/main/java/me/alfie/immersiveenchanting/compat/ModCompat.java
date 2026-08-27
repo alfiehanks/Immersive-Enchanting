@@ -8,7 +8,8 @@ import net.neoforged.neoforge.common.NeoForge;
 public final class ModCompat {
 
     public enum Mods {
-        ENCHANTMENT_DESCRIPTIONS("enchdesc");
+        ENCHANTMENT_DESCRIPTIONS("enchdesc"),
+        ENCHANT_LIMITER("enchant_limiter");
 
         private final String modid;
 

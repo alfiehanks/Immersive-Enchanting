@@ -4,6 +4,7 @@ import me.alfie.alfinolib.networking.NetworkPacket;
 import me.alfie.alfinolib.networking.codec.StreamCodec;
 import me.alfie.alfinolib.util.ResourceId;
 import me.alfie.immersiveenchanting.ImmersiveEnchanting;
+import me.alfie.immersiveenchanting.compat.CompatHooks;
 import me.alfie.immersiveenchanting.datapack.enchantment_cost.CostRegistry;
 import me.alfie.immersiveenchanting.gui.EnchantingTableMenu;
 import me.alfie.immersiveenchanting.util.CostHelper;
@@ -62,6 +63,9 @@ public record EnchantPacket(ResourceKey<Enchantment> enchantmentKey, int level) 
                 player.registryAccess());
 
         ItemStack stack = menu.getToolSlot().getItem();
+
+        if(!CompatHooks.EnchantLimiter.canApplyEnchantment(stack, enchantmentHolder)) return;
+
         if(CostHelper.canEnchant(menu, enchantmentHolder, level, player)) {
             stack.enchant(enchantmentHolder, level);
             menu.getToolSlot().setChanged();

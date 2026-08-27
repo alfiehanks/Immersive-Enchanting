@@ -2,8 +2,11 @@ package me.alfie.immersiveenchanting.compat;
 
 import me.alfie.immersiveenchanting.compat.ench_desc.EnchDescCompat;
 import net.darkhax.enchdesc.common.impl.EnchdescMod;
+import net.enchant_limiter.EnchantLimiterMod;
+import net.enchant_limiter.api.LimitHelper;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 
 import java.util.function.Consumer;
@@ -25,6 +28,15 @@ public final class CompatHooks {
                             .withStyle(EnchDescCompat.config().style));
                 }
             }
+        }
+    }
+
+    public static final class EnchantLimiter {
+        public static boolean canApplyEnchantment(ItemStack itemStack, Holder<Enchantment> enchantmentHolder) {
+            int limit = LimitHelper.getLimitCount(itemStack);
+            boolean isAtLimit = itemStack.getTagEnchantments().keySet().size() >= limit;
+            //can apply if not at limit or item already has this enchantment
+            return !isAtLimit || itemStack.getTagEnchantments().keySet().contains(enchantmentHolder);
         }
     }
 

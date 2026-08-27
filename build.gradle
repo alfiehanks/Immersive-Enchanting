@@ -175,11 +175,14 @@ dependencies {
     compileOnly "curse.maven:prickle-1023259:6961457"
     devCompatImplementation "curse.maven:prickle-1023259:6961457"
 
+    //--Enchant Limiter (RPG Tweaks)--
+    compileOnly "curse.maven:enchant-limiter-1235635:7152638"
+    devCompatImplementation "curse.maven:enchant-limiter-1235635:7152638"
+
+
     //--Vein Mining--
     //compileOnly "curse.maven:vein-mining-431611:5579900"
     //devCompatImplementation "curse.maven:vein-mining-431611:5579900"
-
-
     //implementation "curse.maven:rhino-416294:8218748"
     //implementation "curse.maven:kubejs-238086:8083208"
     //implementation "curse.maven:morejs-666198:7103440"
