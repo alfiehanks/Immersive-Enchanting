@@ -29,6 +29,25 @@ base {
 // Mojang ships Java 21 to end users in 1.21.1, so mods should target Java 21.
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
+sourceSets {
+    main {
+    }
+
+    devMain {
+        //Dev with AlfinoLib
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+    }
+
+    devCompat {
+        //Dev with all compatability mods
+        compileClasspath += sourceSets.devMain.output
+        runtimeClasspath += sourceSets.devMain.output
+    }
+
+
+}
+
 neoForge {
     // Specify the version of NeoForge to use.
     version = project.neo_version
@@ -38,25 +57,47 @@ neoForge {
         minecraftVersion = project.parchment_minecraft_version
     }
 
-    // This line is optional. Access Transformers are automatically detected
-    // accessTransformers = project.files('src/main/resources/META-INF/accesstransformer.cfg')
+    addModdingDependenciesTo(sourceSets.devMain)
+    addModdingDependenciesTo(sourceSets.devCompat)
 
-    // Default run configurations.
-    // These can be tweaked, removed, or duplicated as needed.
     runs {
-        client {
+        devClient {
             client()
 
-            // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
+            ideName = "ClientDev (Main)"
+            sourceSet = sourceSets.devMain
+
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
+        devCompatClient {
+            client()
+
+            ideName = "ClientDev (Compat)"
+            sourceSet = sourceSets.devCompat
+
             systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
         }
 
-        server {
+        devServer {
             server()
+
+            ideName = "ServerDev (Main)"
+            sourceSet = sourceSets.devMain
+
+            programArgument '--nogui'
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
+        devCompatServer {
+            server()
+
+            ideName = "ServerDev (Compat)"
+            sourceSet = sourceSets.devCompat
+
             programArgument '--nogui'
             systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
         }
 
+        /* -- Unused --
         // This run config launches GameTestServer and runs all registered gametests, then exits.
         // By default, the server will crash when no gametests are provided.
         // The gametest system is also enabled by default for other run configs under the /test command.
@@ -74,6 +115,7 @@ neoForge {
             // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
             programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
         }
+         */
 
         // applies to all the run configs above
         configureEach {
@@ -92,11 +134,10 @@ neoForge {
     }
 
     mods {
-        // define mod <-> source bindings
-        // these are used to tell the game which sources are for which mod
-        // multi mod projects should define one per mod
         "${mod_id}" {
             sourceSet(sourceSets.main)
+            sourceSet(sourceSets.devMain)
+            sourceSet(sourceSets.devCompat)
         }
     }
 }
@@ -113,12 +154,25 @@ configurations {
 }
 
 dependencies {
+    //Use compileOnly for dependencies on build - not shipped with this mod's JAR
+    //Use devMainImplementation for base mod testing with AlfinoLib
+    //Use devCompatImplementation for testing mod compats
+
     /* --- Compatibility --- */
     //implementation "curse.maven:vein-mining-431611:5579900"
     //implementation "curse.maven:enchantment-descriptions-250419:7039849"
     //implementation "curse.maven:bookshelf-228525:7335846"
     //implementation "curse.maven:prickle-1023259:6961457"
+
+    //--Alfino Lib--
     compileOnly "curse.maven:alfinolib-1554698:8596074" //1.2.0
+    devMainImplementation "curse.maven:alfinolib-1554698:8596074" //1.2.0
+    devCompatImplementation "curse.maven:alfinolib-1554698:8596074"
+
+    //--Vein Mining--
+    //compileOnly "curse.maven:vein-mining-431611:5579900"
+    //devCompatImplementation "curse.maven:vein-mining-431611:5579900"
+
 
     //implementation "curse.maven:rhino-416294:8218748"
     //implementation "curse.maven:kubejs-238086:8083208"
