@@ -33,6 +33,8 @@ public final class CompatHooks {
 
     public static final class EnchantLimiter {
         public static boolean canApplyEnchantment(ItemStack itemStack, Holder<Enchantment> enchantmentHolder) {
+            if(!ModCompat.isModLoaded(ModCompat.Mods.ENCHANTMENT_DESCRIPTIONS)) return true;
+
             int limit = LimitHelper.getLimitCount(itemStack);
             boolean isAtLimit = itemStack.getTagEnchantments().keySet().size() >= limit;
             //can apply if not at limit or item already has this enchantment
