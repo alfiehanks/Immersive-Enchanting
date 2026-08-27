@@ -80,5 +80,6 @@
   "immersiveenchanting.config.play_node_hover_sounds": "Play Node Hover Sounds",
   "immersiveenchanting.config.enchanted_book_loot_mode": "Enchanted Book Loot Mode",
   "immersiveenchanting.config.obfuscate_locked_enchantments": "Obfuscate Locked Enchantments",
-  "immersiveenchanting.config.disable_enchanted_book_trades": "Disable Enchanted Book Villager Trades"
+  "immersiveenchanting.config.disable_enchanted_book_trades": "Disable Enchanted Book Villager Trades",
+  "immersiveenchanting.jei.enchanting_table_info": "Immersive Enchanting changes enchanting mechanics. Ancient Books are now required to enchant, place them in Chiseled Bookshelves around the table. You can check enchantment ingredient requirements by pressing 'U' on an Ancient Book or ingredient."
 }

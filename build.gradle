@@ -179,6 +179,10 @@ dependencies {
     compileOnly "curse.maven:enchant-limiter-1235635:7152638"
     devCompatImplementation "curse.maven:enchant-limiter-1235635:7152638"
 
+    //--JEI--
+    compileOnly "curse.maven:jei-238222:7391682"
+    devCompatImplementation "curse.maven:jei-238222:7391682"
+
 
     //--Vein Mining--
     //compileOnly "curse.maven:vein-mining-431611:5579900"

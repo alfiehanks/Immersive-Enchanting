@@ -38,8 +38,10 @@ public enum Sprite {
     ELITE_NODE_OBTAINED("textures/gui/sprites/node/elite_node_obtained.png", 26, 26),
     LOCKED_NODE("textures/gui/sprites/node/locked_node.png", 26, 26),
     ALERT_NODE("textures/gui/sprites/node/alert_node.png", 26, 26),
-    ERROR_NODE("textures/gui/sprites/node/error_node.png", 26, 26);
+    ERROR_NODE("textures/gui/sprites/node/error_node.png", 26, 26),
 
+    //Jei
+    JEI_ENCHANTING_ARROW("textures/gui/sprites/jei/jei_enchanting_arrow.png", 50, 8);
     private final ResourceId id;
     private final int width;
     private final int height;
