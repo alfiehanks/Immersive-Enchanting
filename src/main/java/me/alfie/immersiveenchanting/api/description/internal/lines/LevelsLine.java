@@ -22,7 +22,7 @@ public record LevelsLine(NodeTooltip tooltip) implements DescriptionLine {
      */
     @Override
     public void render(GuiGraphicsX gx, int lineX, int lineY, MousePos mousePos) {
-        DescriptionHelper.text(gx, getText(), lineX, lineY);
+        DescriptionHelper.text(gx, getText(), lineX, lineY + DescriptionHelper.ITEM_LINE_OFFSET);
 
         EnchantingTableScreen screen = tooltip.screen();
         RenderedCost renderedCost = screen.enchantmentCostRenderer().getCurrentRenderedCost();
@@ -30,18 +30,23 @@ public record LevelsLine(NodeTooltip tooltip) implements DescriptionLine {
         GuiGraphicsApi.blit(gx,
                 Sprite.XP_LEVEL.id(),
                 lineX + Minecraft.getInstance().font.width(getText().getString()),
-                lineY - 4,
+                lineY + DescriptionHelper.ITEM_LINE_OFFSET/2,
                 Sprite.XP_LEVEL.width(), Sprite.XP_LEVEL.height());
 
         DescriptionHelper.text(gx,
                 Component.literal(String.valueOf(renderedCost.xpLevels())).withColor(0xC8FF8F),
                 lineX + Minecraft.getInstance().font.width(getText().getString()) + 10,
-                lineY + 4);
+                lineY + DescriptionHelper.ITEM_LINE_OFFSET/2 + 4);
 
     }
 
     @Override
     public @NotNull Component getText() {
         return Component.translatable("immersiveenchanting.tooltip.desc.xp_levels").withStyle(ChatFormatting.GRAY);
+    }
+
+    @Override
+    public int getLineHeight() {
+        return DescriptionHelper.ITEM_LINE_HEIGHT;
     }
 }

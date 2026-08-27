@@ -16,7 +16,7 @@ public record FuelsLine(NodeTooltip tooltip) implements DescriptionLine {
 
     @Override
     public void render(GuiGraphicsX gx, int lineX, int lineY, MousePos mousePos) {
-        DescriptionHelper.text(gx, getText(), lineX, lineY);
+        DescriptionHelper.text(gx, getText(), lineX, lineY + DescriptionHelper.ITEM_LINE_OFFSET);
 
         EnchantingTableScreen screen = tooltip.screen();
         RenderedCost renderedFuel = screen.enchantmentCostRenderer().getCurrentRenderedFuel();
@@ -24,11 +24,16 @@ public record FuelsLine(NodeTooltip tooltip) implements DescriptionLine {
         GuiGraphicsApi.itemStackWithTooltip(gx, renderedFuel.stack(),
                 screen.getFont(),
                 lineX + screen.getFont().width(getText().getString()),
-                lineY - 4, mousePos);
+                lineY + DescriptionHelper.ITEM_LINE_OFFSET/2, mousePos);
     }
 
     @Override
     public @NotNull Component getText() {
         return Component.translatable("immersiveenchanting.tooltip.desc.enchanting_fuel").withStyle(ChatFormatting.GRAY);
+    }
+
+    @Override
+    public int getLineHeight() {
+        return DescriptionHelper.ITEM_LINE_HEIGHT;
     }
 }

@@ -21,6 +21,14 @@ import java.util.List;
 public class DescriptionHelper {
 
     public static final int DEFAULT_LINE_WIDTH = 32;
+    public static final int DEFAULT_LINE_HEIGHT = Minecraft.getInstance().font.lineHeight;
+
+    /**Offset for item/sprite rendering that are 16x16 and require extra space (i.e, Materials/Fuel/XP); use with ITEM_LINE_HEIGHT*/
+    public static final int ITEM_LINE_OFFSET = 5;
+
+    /**Line height for lines using items/sprites that are 16x16 and require extra space (i.e, Materials/Fuel/XP)*/
+    public static final int ITEM_LINE_HEIGHT = DEFAULT_LINE_HEIGHT + ITEM_LINE_OFFSET*2;
+
 
     public static void text(GuiGraphicsX gx, Component component, int x, int y) {
         GuiGraphicsApi.text(gx, Minecraft.getInstance().font, component, x, y, true);
@@ -68,12 +76,12 @@ public class DescriptionHelper {
 
         if(!tooltip.screen().enchantmentCostRenderer().getCurrentRenderedCost().stack().is(Items.AIR)) {
             description.insertLine(lineNumber, new MaterialsLine(tooltip));
-            lineNumber += 2;
+            lineNumber += 1;
         }
 
         if(!tooltip.screen().enchantmentCostRenderer().getCurrentRenderedFuel().stack().is(Items.AIR)) {
             description.insertLine(lineNumber, new FuelsLine(tooltip));
-            lineNumber += 2;
+            lineNumber += 1;
         }
 
         if(tooltip.screen().enchantmentCostRenderer().getCurrentRenderedCost().xpLevels() > 0) description.insertLine(lineNumber, new LevelsLine(tooltip));

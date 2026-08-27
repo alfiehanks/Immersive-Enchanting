@@ -14,13 +14,11 @@ import java.util.List;
 public class DescriptionLayout {
     private static final Logger log = LoggerFactory.getLogger(DescriptionLayout.class);
     protected final List<DescriptionLine> lines = new ArrayList<>();
-    protected final int lineSpace;
 
     /**Add extra padding to the width of the description layout to expand the box manually, useful for descriptions using item rendering.*/
     public int widthPadding = 0;
 
     public DescriptionLayout(TooltipDescription tooltipDescription) {
-        lineSpace = Minecraft.getInstance().font.lineHeight;
     }
 
     /**
@@ -57,7 +55,7 @@ public class DescriptionLayout {
 
         for (DescriptionLine line : lines) {
             line.render(gx, startX, startY + yOffset, mousePos);
-            yOffset += lineSpace;
+            yOffset += line.getLineHeight();
         }
     }
 
@@ -84,8 +82,14 @@ public class DescriptionLayout {
      * @return
      */
     public int getRenderedHeight() {
-        final int padding = 4;
-        return (lines.size()+1) * lineSpace + padding;
+        final int padding = 12;
+
+        int height = 0;
+        for (DescriptionLine line : lines) {
+            height += line.getLineHeight();
+        }
+
+        return height + padding;
     }
 
     public int getRenderedWidth() {
