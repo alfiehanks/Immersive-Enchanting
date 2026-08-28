@@ -1,0 +1,7 @@
+{
+  "levels": {
+    "1": [{"item_cost": {"item": "minecraft:flint", "count": 8}}],
+    "2": [{"item_cost": {"item": "minecraft:pointed_dripstone", "count": 4}}],
+    "3": [{"item_cost": {"item": "minecraft:echo_shard", "count": 1}}]
+  }
+}

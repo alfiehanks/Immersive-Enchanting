@@ -1,0 +1,7 @@
+{
+  "levels": {
+    "1": [{"item_cost": {"item": "minecraft:copper_block", "count": 1}}],
+    "2": [{"item_cost": {"item": "minecraft:copper_bulb", "count": 1}}],
+    "3": [{"item_cost": {"item": "minecraft:shulker_shell", "count": 1}}]
+  }
+}

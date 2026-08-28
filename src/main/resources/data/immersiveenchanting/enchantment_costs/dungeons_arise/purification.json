@@ -1,0 +1,7 @@
+{
+  "levels": {
+    "1": [{"item_cost": {"item": "minecraft:milk_bucket", "count": 1}}],
+    "2": [{"item_cost": {"item": "minecraft:ghast_tear", "count": 1}}],
+    "3": [{"item_cost": {"item": "minecraft:totem_of_undying", "count": 1}}]
+  }
+}

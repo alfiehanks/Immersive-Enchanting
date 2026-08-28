@@ -1,0 +1,8 @@
+{
+  "levels": {
+    "1": [{"item_cost": {"item": "minecraft:string", "count": 8}}],
+    "2": [{"item_cost": {"item": "minecraft:cobweb", "count": 4}}],
+    "3": [{"item_cost": {"item": "minecraft:fermented_spider_eye", "count": 4}}],
+    "4": [{"item_cost": {"item": "minecraft:totem_of_undying", "count": 1}}]
+  }
+}
