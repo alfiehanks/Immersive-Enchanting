@@ -2,15 +2,13 @@ package me.alfie.immersiveenchanting.mixin;
 
 import me.alfie.immersiveenchanting.ImmersiveEnchanting;
 import me.alfie.immersiveenchanting.compat.CompatHooks;
-import me.alfie.immersiveenchanting.compat.ModCompat;
-import me.alfie.immersiveenchanting.compat.ench_desc.EnchDescCompat;
 import me.alfie.immersiveenchanting.config.ClientConfig;
+import me.alfie.immersiveenchanting.item.AncientBook;
 import me.alfie.immersiveenchanting.item.ModItems;
 import me.alfie.immersiveenchanting.util.EnchantmentUtil;
-import net.darkhax.enchdesc.common.impl.Config;
-import net.darkhax.enchdesc.common.impl.EnchdescMod;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
@@ -21,6 +19,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -40,7 +39,6 @@ import java.util.function.Consumer;
  */
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixin {
-
     /**
      * Overrides tooltip rendering for stored enchantments on ancient books.
      *
@@ -73,39 +71,7 @@ public abstract class ItemStackMixin {
                                           CallbackInfo ci) {
         ItemStack self = (ItemStack)(Object)this;
         if (type == DataComponents.STORED_ENCHANTMENTS && self.is(ModItems.ANCIENT_BOOK.get())) {
-            ItemEnchantments enchantments = self.get(DataComponents.STORED_ENCHANTMENTS);
-
-            MutableComponent component = Component.empty();
-            if (enchantments != null) {
-                for(Holder<Enchantment> enchantmentHolder : enchantments.keySet()) {
-                    component
-                            .append(Component.translatable("item.immersiveenchanting.ancient_book.desc.enchantment"))
-                            .append(" ")
-                            .append(enchantmentHolder.value().description());
-                    consumer.accept(component.withStyle(ChatFormatting.GOLD));
-
-                    if(ClientConfig.isShowAddedByTooltipEnabled()) {
-                        String modName = ImmersiveEnchanting.getModName(enchantmentHolder.getKey()
-                                .location()
-                                .getNamespace());
-
-                        consumer.accept(
-                                Component.translatable("item.immersiveenchanting.ancient_book.desc.enchantment_added_by", modName)
-                                        .withStyle(ChatFormatting.BLUE)
-                        );
-                    }
-
-                    CompatHooks.EnchantmentDescriptions.addEnchantmentDescription(enchantmentHolder, enchantments.getLevel(enchantmentHolder), consumer);
-                }
-            }
-
-            if(EnchantmentUtil.isReplicated(self)) consumer.accept(
-                    Component.translatable("item.immersiveenchanting.ancient_book.desc.replicated")
-                            .withStyle(ChatFormatting.GRAY)
-            );
-
-
-
+            AncientBook.makeTooltip(self, consumer);
             ci.cancel(); //Prevent DataComponents.STORED_ENCHANTMENTS tooltip being applied normally to ancient books.
         }
     }

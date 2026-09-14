@@ -66,6 +66,16 @@ public final class EnchantmentUtil {
         return enchantments.getFirst();
     }
 
+    public static @Nullable List<Holder<Enchantment>> getAllStoredEnchantments(ItemStack ancientBook) {
+        ItemEnchantments itemEnchantments = ancientBook.get(DataComponents.STORED_ENCHANTMENTS);
+        if(itemEnchantments == null) return null;
+
+        List<Holder<Enchantment>> enchantments = itemEnchantments.keySet().stream().toList();
+        if(enchantments.isEmpty()) return null;
+
+        return enchantments;
+    }
+
     /**
      * Universal enchantment level accessor for stored_enchantments and enchantments.
      */

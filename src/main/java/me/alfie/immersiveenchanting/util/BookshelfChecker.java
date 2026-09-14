@@ -40,8 +40,8 @@ public class BookshelfChecker {
 
             for(ItemStack stack : books) {
                 if(stack.getItem() == ModItems.ANCIENT_BOOK.get()) {
-                    Holder<Enchantment> enchantmentHolder = EnchantmentUtil.getStoredEnchantment(stack);
-                    if(enchantmentHolder != null) result.add(enchantmentHolder);
+                    List<Holder<Enchantment>> enchantmentHolder = EnchantmentUtil.getAllStoredEnchantments(stack);
+                    if(enchantmentHolder != null) result.addAll(enchantmentHolder);
                 }
             }
         }
