@@ -69,11 +69,12 @@ public class InjectAncientBookLootModifier extends LootModifier {
     }
 
     protected InjectAncientBookLootModifier(LootItemCondition[] conditionsIn,
+                                            int priority,
                                             String mode,
                                             Optional<List<Holder<Enchantment>>> enchantments,
                                             int minRolls,
                                             int maxRolls) {
-        super(conditionsIn);
+        super(conditionsIn, 0);
         this.mode = mode;
         this.enchantments = enchantments.orElse(List.of());
         this.minRolls = minRolls;

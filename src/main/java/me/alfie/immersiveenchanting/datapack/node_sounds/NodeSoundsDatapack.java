@@ -1,5 +1,6 @@
 package me.alfie.immersiveenchanting.datapack.node_sounds;
 
+import me.alfie.alfinolib.datapacks.DatapackDefinition;
 import me.alfie.alfinolib.datapacks.DatapackKey;
 import me.alfie.alfinolib.datapacks.DatapackRegistry;
 import me.alfie.alfinolib.datapacks.ModDatapack;

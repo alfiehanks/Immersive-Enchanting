@@ -9,6 +9,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.EnchantingTableBlockEntity;
 import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
 
 import java.util.Collections;
 
@@ -17,13 +18,13 @@ import java.util.Collections;
  *
  * <p>Since Immersive Enchanting does not own the enchanting-table block
  * (it modifies the vanilla one via a Mixin), we hook into the
- * {@link BlockEvent.BreakEvent} game-bus event to detect breakage and drop
+ * {@link BreakBlockEvent} game-bus event to detect breakage and drop
  * the stored items. After dropping, the slots are cleared to make sure no
  * duplication can occur.</p>
  */
 public final class EnchantingTableBreakHandler {
 
-    public static void onBlockBreak(BlockEvent.BreakEvent event) {
+    public static void onBlockBreak(BreakBlockEvent event) {
         if (event.isCanceled()) return;
         if (!(event.getLevel() instanceof Level level) || level.isClientSide()) return;
 

@@ -29,8 +29,8 @@ public class RemoveEnchantedBooksModifier extends LootModifier {
                     LootModifier.codecStart(inst).apply(inst, RemoveEnchantedBooksModifier::new));
 
 
-    public RemoveEnchantedBooksModifier(LootItemCondition[] conditions) {
-        super(conditions);
+    public RemoveEnchantedBooksModifier(LootItemCondition[] conditions, int priority) {
+        super(conditions, 0);
     }
 
     @Override
