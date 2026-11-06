@@ -23,7 +23,8 @@ public class ServerConfig {
 
     public enum EnchantedBookLootMode {
         REPLACE,
-        REMOVE
+        REMOVE,
+        NOTHING
     }
 
     public final ForgeConfigSpec.EnumValue<EnchantedBookLootMode> ENCHANTED_BOOK_LOOT_MODE;
