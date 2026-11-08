@@ -31,7 +31,8 @@ import java.util.List;
  * Client-to-server packet requesting enchantment transmutation.
  *
  * <p>Replaces the stored enchantment on an ancient book with a new randomly selected one,
- * excluding currently available bookshelf enchantments where applicable.</p>
+ * excluding currently available bookshelf enchantments where applicable, and excluding any
+ * enchantment whose cost data marks it as not {@code transmutable} (see {@link me.alfie.immersiveenchanting.datapack.enchantment_cost.codec.CostData#isTransmutable()}).</p>
  *
  * <p>The operation is validated server-side and requires:
  * <ul>
@@ -60,11 +61,11 @@ public record TransmutePacket() implements NetworkPacket<TransmutePacket> {
 
         ItemStack ancientBookStack = menu.getToolSlot().getItem();
         List<Holder<Enchantment>> availableEnchantments = menu.getAvailableEnchantments();
-        List<Holder<Enchantment>> allEnchantments = CostRegistry.server().getAllEnabledEnchantmentHolders();
+        List<Holder<Enchantment>> allEnchantments = CostRegistry.server().getAllTransmutableEnchantmentHolders();
 
         allEnchantments.removeIf(holder ->
                 availableEnchantments.stream().anyMatch(av -> av.value().equals(holder.value())));
-        if(allEnchantments.isEmpty()) allEnchantments = CostRegistry.server().getAllEnabledEnchantmentHolders();
+        if(allEnchantments.isEmpty()) allEnchantments = CostRegistry.server().getAllTransmutableEnchantmentHolders();
 
         RandomSource random = level.getRandom();
         int randomIndex = random.nextInt(allEnchantments.size());
