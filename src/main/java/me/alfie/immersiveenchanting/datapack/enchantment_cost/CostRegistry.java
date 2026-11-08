@@ -137,6 +137,18 @@ public class CostRegistry {
         return result;
     }
 
+    /**
+     * Same as {@link #getAllEnabledEnchantmentHolders()}, but also excludes enchantments whose
+     * {@code transmutable} field is explicitly set to {@code false}. Used to build the candidate
+     * pool for Transmute results, so individual enchantments can opt out of being transmuted into
+     * while remaining enabled for normal enchanting.
+     */
+    public List<Holder<Enchantment>> getAllTransmutableEnchantmentHolders() {
+        List<Holder<Enchantment>> result = getAllEnchantmentHolders();
+        result.removeIf(holder -> !get(holder).isTransmutable());
+        return result;
+    }
+
     public int getHighestLevel() {
         int highestLevel = 0;
         for (ResourceId id : getAllEnchantmentIds()) {

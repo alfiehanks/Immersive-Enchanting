@@ -49,6 +49,11 @@ public class CostHelper {
         if(!CostRegistry.server().isRegistered(CostRegistry.REPLICATE)) return false;
         if(!CostRegistry.server().get(CostRegistry.REPLICATE).enabled()) return false;
 
+        Holder<Enchantment> storedEnchantment = EnchantmentUtil.getStoredEnchantment(menu.getToolSlot().getItem());
+        if(storedEnchantment != null
+                && CostRegistry.server().isRegistered(storedEnchantment)
+                && !CostRegistry.server().get(storedEnchantment).isReplicable()) return false;
+
         return tryConsumeValidCostAndFuel(
                 CostRegistry.REPLICATE, 1,
                 menu, player);
